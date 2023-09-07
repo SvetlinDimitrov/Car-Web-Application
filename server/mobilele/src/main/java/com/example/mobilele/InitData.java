@@ -1,4 +1,4 @@
-package com.example.mobilele.web;
+package com.example.mobilele;
 
 import com.example.mobilele.services.*;
 import lombok.AllArgsConstructor;

@@ -19,5 +19,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-security:
-  api-secret-key: "topSecretBra"
+api:
+  security-secret-key: "topSecretBra"
+  base-url: "/car/api"
