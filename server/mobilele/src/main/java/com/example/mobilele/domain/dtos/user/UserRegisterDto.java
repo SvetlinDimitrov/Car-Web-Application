@@ -5,54 +5,36 @@ import com.example.mobilele.exceptions.passwordChecker.PasswordsMatchConstrain;
 import com.example.mobilele.exceptions.usernameChecker.NotUsedUsernameConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
+
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @PasswordsMatchConstrain
+public class UserRegisterDto{
 
-public class UserRegisterDto extends UserBaseDto{
-
-    @Size(min = 4)
-    @NotBlank
-    @NotUsedUsernameConstraint
+    @Size(min = 4, message = "username must be at least 4 chars long")
+    @NotBlank(message = "username must not be empty")
+    @NotUsedUsernameConstraint(message = "username already excited in the data")
     private String username;
 
-    @Size(min = 5)
-    @NotBlank
+    @Size(min = 5 , message = "password must be at least 5 chars long")
+    @NotBlank(message = "password must not be empty")
     private String password;
 
-    @NotBlank
+    @NotBlank(message = "confirmPassword must not be empty")
     private String confirmPassword;
 
-    @Size(min = 3)
-    @NotBlank
+    @Size(min = 3 ,message = "firstName must be at least 3 chars long")
+    @NotBlank(message = "firstName must not be empty")
     private String firstName;
 
-    @Size(min = 3)
-    @NotBlank
+    @Size(min = 3 ,message = "lastName must be at least 3 chars long")
+    @NotBlank(message = "lastName must not be empty")
     private String lastName;
 
     private String imageUrl;
-
-    public UserRegisterDto(String password, String confirmPassword, String username) {
-        super(password, confirmPassword, username);
-    }
-
-    public UserRegisterDto(String password, String confirmPassword, String username, String username1, String password1, String confirmPassword1, String firstName, String lastName, String imageUrl) {
-        super(password, confirmPassword, username);
-        this.username = username1;
-        this.password = password1;
-        this.confirmPassword = confirmPassword1;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.imageUrl = imageUrl;
-    }
 
     public User toUser(){
         return User.builder()
@@ -61,7 +43,7 @@ public class UserRegisterDto extends UserBaseDto{
                 .firstName(firstName)
                 .lastName(lastName)
                 .isActive(false)
-                .imageUrl(imageUrl.isEmpty() ? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : imageUrl)
+                .imageUrl(imageUrl == null ? "https://cdn-icons-png.flaticon.com/512/149/149071.png" : imageUrl)
                 .created(LocalDate.now())
                 .modified(null)
                 .build();

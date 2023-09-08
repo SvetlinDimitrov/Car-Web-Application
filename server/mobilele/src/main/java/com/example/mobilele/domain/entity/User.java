@@ -42,10 +42,10 @@ public class User {
     @Column
     private LocalDate modified;
 
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller" , cascade = CascadeType.REMOVE)
     private List<Offer> offerList;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "user_models",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -1,6 +1,5 @@
 package com.example.mobilele.config.security;
 
-import com.example.mobilele.exceptions.UserNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,13 +26,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         extractTokenFromRequest(request)
                 .map(jwtUtil::decodeToken)
-                .map(t -> {
-                    try {
-                        return jwtUtil.convert(t);
-                    } catch (UserNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
+                .map(jwtUtil::convert)
                 .map(t -> new UsernamePasswordAuthenticationToken(t,null, t.getAuthorities()))
                 .ifPresent(auth -> SecurityContextHolder.getContext().setAuthentication(auth));
 

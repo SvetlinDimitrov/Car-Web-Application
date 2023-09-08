@@ -26,7 +26,7 @@ public class Brand {
     @Column
     private LocalDate modified;
 
-    @OneToMany(mappedBy = "brand")
+    @OneToMany(mappedBy = "brand" , cascade = CascadeType.REMOVE)
     private List<Model> modelList;
 
 }

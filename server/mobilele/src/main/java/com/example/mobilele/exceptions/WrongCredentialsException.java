@@ -1,14 +1,15 @@
 package com.example.mobilele.exceptions;
 
-import org.springframework.validation.FieldError;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.validation.ObjectError;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class WrongCredentialsException extends Exception {
-    public WrongCredentialsException(List<FieldError> errors) {
+    public WrongCredentialsException(List<ObjectError> errors) {
         super(errors.stream()
-                .map(error -> error.getField() + " : " + error.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining("\n")));
     }
 

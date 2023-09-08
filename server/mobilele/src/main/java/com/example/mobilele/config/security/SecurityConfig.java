@@ -1,8 +1,10 @@
 package com.example.mobilele.config.security;
 
+import com.example.mobilele.domain.constants.Role;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -29,7 +31,13 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         request -> request
-                                .anyRequest().permitAll()
+                                .requestMatchers(HttpMethod.POST , "/car/api/user/login").anonymous()
+                                .requestMatchers(HttpMethod.POST ,"/car/api/user/register").anonymous()
+                                .requestMatchers(HttpMethod.GET ,"/car/api/brand").permitAll()
+                                .requestMatchers(HttpMethod.PATCH , "/car/api/brand").hasRole(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.DELETE , "/car/api/brand").hasRole(Role.ADMIN.name())
+                                .requestMatchers(HttpMethod.POST , "/car/api/brand").hasRole(Role.ADMIN.name())
+                                .anyRequest().authenticated()
                 )
                 .build();
     }

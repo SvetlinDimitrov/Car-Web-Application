@@ -38,7 +38,7 @@ public class Model {
     @ManyToOne
     private Brand brand;
 
-    @OneToMany(mappedBy = "model")
+    @OneToMany(mappedBy = "model" , cascade = CascadeType.REMOVE)
     private List<Offer> offerList;
 
     @ManyToMany(mappedBy = "modelList")

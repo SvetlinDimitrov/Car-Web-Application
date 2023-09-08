@@ -1,6 +1,7 @@
 package com.example.mobilele.web;
 
-import com.example.mobilele.exceptions.UserNotFoundException;
+import com.example.mobilele.exceptions.AlreadyExistException;
+import com.example.mobilele.exceptions.NotFoundException;
 import com.example.mobilele.exceptions.WrongCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionController {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<String> catchUserNotFoundException(UserNotFoundException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> catchUserNotFoundException(NotFoundException e) {
 
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(WrongCredentialsException.class)
@@ -21,4 +22,11 @@ public class ExceptionController {
 
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(AlreadyExistException.class)
+    public ResponseEntity<String> catchAlreadyPersistException(AlreadyExistException e) {
+
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }

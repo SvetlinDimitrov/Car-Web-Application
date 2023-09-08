@@ -1,25 +1,15 @@
 package com.example.mobilele.domain.dtos.user;
-
-import com.example.mobilele.exceptions.passwordChecker.PasswordsMatchConstrain;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@PasswordsMatchConstrain
 
-public class UserLoginDro extends UserBaseDto{
+@Data
+public class UserLoginDro{
 
-    @NotBlank
+    @NotBlank(message = "username must not be empty")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "password must not be empty")
     private String password;
 
-    @NotBlank
-    private String confirmPassword;
-
-    public UserLoginDro(String password, String confirmPassword, String username) {
-        super(password, confirmPassword, username);
-    }
 }

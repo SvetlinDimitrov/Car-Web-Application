@@ -2,11 +2,8 @@ package com.example.mobilele.web;
 
 import com.example.mobilele.config.security.JwtUtil;
 import com.example.mobilele.config.security.UserPrincipal;
-import com.example.mobilele.domain.dtos.user.UserEditDto;
-import com.example.mobilele.domain.dtos.user.UserLoginDro;
-import com.example.mobilele.domain.dtos.user.UserRegisterDto;
-import com.example.mobilele.domain.dtos.user.UserView;
-import com.example.mobilele.exceptions.UserNotFoundException;
+import com.example.mobilele.domain.dtos.user.*;
+import com.example.mobilele.exceptions.NotFoundException;
 import com.example.mobilele.exceptions.WrongCredentialsException;
 import com.example.mobilele.services.UserServiceImp;
 import jakarta.validation.Valid;
@@ -30,20 +27,20 @@ public class UserController {
         this.jwtUtil = jwtUtil;
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserView> userDetails(@PathVariable String userId) throws UserNotFoundException {
-        UserView userView = new UserView(userServiceImp.getById(userId));
+    @GetMapping()
+    public ResponseEntity<UserView> userDetails(@AuthenticationPrincipal UserPrincipal principal) throws NotFoundException {
+        UserView userView = new UserView(userServiceImp.getById(principal.getId()));
         return new ResponseEntity<>(userView, HttpStatus.OK);
     }
     @PatchMapping("/edit")
     public ResponseEntity<UserView> editUser(@Valid @RequestBody UserEditDto editDto,
                                              BindingResult bindingResult,
-                                             @AuthenticationPrincipal UserPrincipal userPrincipal) throws WrongCredentialsException, UserNotFoundException {
+                                             @AuthenticationPrincipal UserPrincipal userPrincipal) throws WrongCredentialsException, NotFoundException {
         if(bindingResult.hasErrors()){
-            throw new WrongCredentialsException(bindingResult.getFieldErrors());
+            throw new WrongCredentialsException(bindingResult.getAllErrors());
         }
 
-        UserView userView = userServiceImp.editUser(editDto, userPrincipal.getId().toString());
+        UserView userView = userServiceImp.editUser(editDto, userPrincipal.getId());
         return new ResponseEntity<>(userView , HttpStatus.OK);
     }
 
@@ -52,26 +49,34 @@ public class UserController {
         return new ResponseEntity<>(userServiceImp.getAllUsers() , HttpStatus.OK);
     }
 
-    @PatchMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<HttpStatus> registerUser(@Valid @RequestBody UserRegisterDto userRegisterDto,
                                                    BindingResult bindingResult) throws WrongCredentialsException {
         if(bindingResult.hasErrors()){
-            throw new WrongCredentialsException(bindingResult.getFieldErrors());
+            throw new WrongCredentialsException(bindingResult.getAllErrors());
         }
         userServiceImp.register(userRegisterDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PatchMapping("/login")
-    public ResponseEntity<UserPrincipal> loginUser(@Valid @RequestBody UserLoginDro userLoginDro,
+    @PostMapping("/login")
+    public ResponseEntity<UserPrincipalDto> loginUser(@Valid @RequestBody UserLoginDro userLoginDro,
                                                    BindingResult bindingResult) throws WrongCredentialsException {
         if(bindingResult.hasErrors()){
-            throw new WrongCredentialsException(bindingResult.getFieldErrors());
+            throw new WrongCredentialsException(bindingResult.getAllErrors());
         }
+
         UserPrincipal userPrincipal = userServiceImp.login(userLoginDro);
         String jwtToken = jwtUtil.createJwtToken(userPrincipal.getId());
         userPrincipal.setJwtToken(jwtToken);
-        return new ResponseEntity<>(userPrincipal , HttpStatus.OK);
+
+        return new ResponseEntity<>(new UserPrincipalDto(userPrincipal) , HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserPrincipal principal) throws NotFoundException {
+        userServiceImp.deleteUser(principal.getId());
+        return new ResponseEntity<>(principal.getUsername() +"was successfuly deleted",HttpStatus.NO_CONTENT);
     }
 
 

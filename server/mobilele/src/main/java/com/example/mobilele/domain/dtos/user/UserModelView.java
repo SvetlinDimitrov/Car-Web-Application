@@ -2,19 +2,12 @@ package com.example.mobilele.domain.dtos.user;
 
 import com.example.mobilele.domain.constants.ModelCategory;
 import com.example.mobilele.domain.entity.Model;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 
 import java.util.UUID;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@Builder
-
+@Data
 public class UserModelView {
 
     private UUID id;
@@ -25,7 +18,6 @@ public class UserModelView {
     private Integer generation;
     private UserBrandView brand;
 
-    public UserModelView() {}
     public UserModelView(Model entity) {
 
         this.id = entity.getId();
