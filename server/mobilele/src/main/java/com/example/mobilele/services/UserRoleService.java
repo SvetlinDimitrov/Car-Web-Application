@@ -1,6 +1,6 @@
 package com.example.mobilele.services;
 
-import com.example.mobilele.domain.constants.Role;
+import com.example.mobilele.utils.constants.Role;
 import com.example.mobilele.domain.entity.UserRole;
 import com.example.mobilele.repos.UserRoleRepository;
 import lombok.AllArgsConstructor;

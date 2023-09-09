@@ -1,6 +1,6 @@
 package com.example.mobilele.domain.dtos.user;
 
-import com.example.mobilele.exceptions.usernameChecker.NotUsedUsernameConstraint;
+import com.example.mobilele.validators.usernameChecker.NotUsedUsernameConstraint;
 import lombok.Data;
 
 @Data

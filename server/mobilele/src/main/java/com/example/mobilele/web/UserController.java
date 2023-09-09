@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<UserView> userDetails(@AuthenticationPrincipal UserPrincipal principal) throws NotFoundException {
+    public ResponseEntity<UserView> userDetails(@AuthenticationPrincipal UserPrincipal principal) throws NotFoundException, WrongCredentialsException {
         UserView userView = new UserView(userServiceImp.getById(principal.getId()));
         return new ResponseEntity<>(userView, HttpStatus.OK);
     }
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserPrincipal principal) throws NotFoundException {
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserPrincipal principal) throws NotFoundException, WrongCredentialsException {
         userServiceImp.deleteUser(principal.getId());
         return new ResponseEntity<>(principal.getUsername() +"was successfuly deleted",HttpStatus.NO_CONTENT);
     }

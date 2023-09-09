@@ -1,7 +1,7 @@
 package com.example.mobilele.domain.entity;
 
-import com.example.mobilele.domain.constants.EngineType;
-import com.example.mobilele.domain.constants.TransmissionType;
+import com.example.mobilele.utils.constants.EngineType;
+import com.example.mobilele.utils.constants.TransmissionType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +28,7 @@ public class Offer {
     @Enumerated
     private EngineType engine;
 
-    @Column(name = "image_url")
+    @Column
     private String imageUrl;
 
     @Column

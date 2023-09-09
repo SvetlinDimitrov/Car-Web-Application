@@ -1,6 +1,6 @@
 package com.example.mobilele.repos;
 
-import com.example.mobilele.domain.constants.Role;
+import com.example.mobilele.utils.constants.Role;
 import com.example.mobilele.domain.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

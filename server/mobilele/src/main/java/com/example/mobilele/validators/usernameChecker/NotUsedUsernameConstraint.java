@@ -1,4 +1,4 @@
-package com.example.mobilele.exceptions.usernameChecker;
+package com.example.mobilele.validators.usernameChecker;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

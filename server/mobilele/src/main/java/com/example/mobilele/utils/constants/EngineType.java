@@ -1,4 +1,4 @@
-package com.example.mobilele.domain.constants;
+package com.example.mobilele.utils.constants;
 
 public enum EngineType {
     GASOLINE, DIESEL, ELECTRIC, HYBRID

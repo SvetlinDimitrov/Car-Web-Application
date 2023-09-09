@@ -1,6 +1,6 @@
 package com.example.mobilele.domain.entity;
 
-import com.example.mobilele.domain.constants.Role;
+import com.example.mobilele.utils.constants.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

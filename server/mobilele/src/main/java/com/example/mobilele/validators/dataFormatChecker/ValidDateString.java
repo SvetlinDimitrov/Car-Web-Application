@@ -1,4 +1,4 @@
-package com.example.mobilele.exceptions.dataFormatChecker;
+package com.example.mobilele.validators.dataFormatChecker;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

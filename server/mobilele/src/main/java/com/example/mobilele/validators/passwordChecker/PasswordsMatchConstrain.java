@@ -1,4 +1,4 @@
-package com.example.mobilele.exceptions.passwordChecker;
+package com.example.mobilele.validators.passwordChecker;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

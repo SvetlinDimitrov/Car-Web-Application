@@ -1,7 +1,8 @@
 package com.example.mobilele.services;
 
 import com.example.mobilele.config.security.UserPrincipal;
-import com.example.mobilele.domain.constants.Role;
+import com.example.mobilele.utils.EntityHelper;
+import com.example.mobilele.utils.constants.Role;
 import com.example.mobilele.domain.dtos.user.UserEditDto;
 import com.example.mobilele.domain.dtos.user.UserLoginDro;
 import com.example.mobilele.domain.dtos.user.UserRegisterDto;
@@ -26,23 +27,13 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImp extends SeedService{
+public class UserServiceImp extends SeedService {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final OfferRepository offerRepository;
+    private final EntityHelper entityHelper;
 
-    @Transactional
-    public User getById(String userId) throws NotFoundException {
-        return userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new NotFoundException("User with the the given id:" + userId + " does not excised"));
-    }
-
-    @Transactional
-    public Boolean freeToUseUsername(String username){
-        return userRepository.findByUsername(username).isEmpty();
-    }
 
     @Override
     protected Boolean isEmpty() {
@@ -77,6 +68,10 @@ public class UserServiceImp extends SeedService{
         ));
     }
 
+    public User getById(String userId) throws NotFoundException, WrongCredentialsException {
+        return entityHelper.findUserById(userId);
+    }
+
     public List<UserView> getAllUsers() {
         return userRepository.findAll().stream().map(UserView::new).toList();
     }
@@ -91,66 +86,57 @@ public class UserServiceImp extends SeedService{
     public UserPrincipal login(UserLoginDro userLoginDro) throws WrongCredentialsException {
         Optional<User> user = userRepository.findByUsername(userLoginDro.getUsername());
 
-
-        if(
-                user.isPresent() &&
-                passwordEncoder.matches(userLoginDro.getPassword() , user.get().getPassword())
-        ){
+        if (user.isPresent() && passwordEncoder.matches(userLoginDro.getPassword(), user.get().getPassword())) {
             return new UserPrincipal(user.get());
         }
         throw new WrongCredentialsException("Username or password does not match");
     }
 
-    @Transactional
-    public UserView editUser(UserEditDto dto , String id) throws NotFoundException, WrongCredentialsException {
+    @Modifying
+    public UserView editUser(UserEditDto dto, String id) throws NotFoundException, WrongCredentialsException {
         User user = getById(id);
 
 
-        if(dto.getUsername() != null){
-            if(dto.getUsername().trim().length() >= 4){
+        if (dto.getUsername() != null) {
+            if (dto.getUsername().trim().length() >= 4) {
                 user.setUsername(dto.getUsername());
-            }else{
+            } else {
                 throw new WrongCredentialsException("username must be at least 4 chars long");
             }
         }
-        if(dto.getImageUrl() != null){
+        if (dto.getImageUrl() != null) {
             user.setImageUrl(dto.getImageUrl());
         }
-        if(dto.getFirstName() != null){
-            if(dto.getFirstName().trim().length() >= 3){
+        if (dto.getFirstName() != null) {
+            if (dto.getFirstName().trim().length() >= 3) {
                 user.setFirstName(dto.getFirstName());
-            }else{
+            } else {
                 throw new WrongCredentialsException("firstName must be at least 3 chars long");
             }
         }
-        if(dto.getPassword() != null){
-            if(dto.getPassword().trim().length() >= 5){
+        if (dto.getPassword() != null) {
+            if (dto.getPassword().trim().length() >= 5) {
                 user.setPassword(passwordEncoder.encode(dto.getPassword()));
-            }else{
+            } else {
                 throw new WrongCredentialsException("password must be at least 5 chars long");
             }
         }
-        if(dto.getLastName() != null){
-            if(dto.getLastName().trim().length() >= 4){
+        if (dto.getLastName() != null) {
+            if (dto.getLastName().trim().length() >= 4) {
                 user.setLastName(dto.getLastName());
-            }else{
+            } else {
                 throw new WrongCredentialsException("lastName must be at least 4 chars long");
             }
         }
 
+        user.setModified(LocalDate.now());
         User save = userRepository.save(user);
 
         return new UserView(save);
     }
 
-    public User getByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-    }
-
-    @Transactional
     @Modifying
-    public void deleteUser(String id) throws NotFoundException {
+    public void deleteUser(String id) throws NotFoundException, WrongCredentialsException {
         User user = getById(id);
         userRepository.delete(user);
     }

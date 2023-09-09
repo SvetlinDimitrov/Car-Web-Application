@@ -1,10 +1,9 @@
 package com.example.mobilele.domain.entity;
 
-import com.example.mobilele.domain.constants.ModelCategory;
+import com.example.mobilele.utils.constants.ModelCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,14 +18,14 @@ public class Model {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @Enumerated
     @Column
     private ModelCategory category;
 
-    @Column(name = "image_url",columnDefinition = "varchar(512)")
+    @Column(columnDefinition = "varchar(512)")
     private String imageUrl;
 
     @Column

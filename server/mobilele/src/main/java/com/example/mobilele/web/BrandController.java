@@ -27,7 +27,7 @@ public class BrandController {
 
     @GetMapping
     public ResponseEntity<List<BrandView>> getAllBrands(@RequestParam(value = "brandId",required = false) String brandId,
-                                                        @RequestParam(value = "name" , required = false) String name) throws NotFoundException {
+                                                        @RequestParam(value = "name" , required = false) String name) throws NotFoundException, WrongCredentialsException {
 
         if(brandId != null){
             BrandView brandView = brandServiceImp.getViewBrandById(brandId);
@@ -60,7 +60,7 @@ public class BrandController {
     }
 
     @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteBrand(@RequestParam("id") String brandId) throws NotFoundException {
+    public ResponseEntity<HttpStatus> deleteBrand(@RequestParam("id") String brandId) throws NotFoundException, WrongCredentialsException {
 
         brandServiceImp.deleteBrand(brandId );
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

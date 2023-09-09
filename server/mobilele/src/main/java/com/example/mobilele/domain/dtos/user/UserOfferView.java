@@ -1,7 +1,7 @@
 package com.example.mobilele.domain.dtos.user;
 
-import com.example.mobilele.domain.constants.EngineType;
-import com.example.mobilele.domain.constants.TransmissionType;
+import com.example.mobilele.utils.constants.EngineType;
+import com.example.mobilele.utils.constants.TransmissionType;
 import com.example.mobilele.domain.entity.Offer;
 import lombok.Data;
 

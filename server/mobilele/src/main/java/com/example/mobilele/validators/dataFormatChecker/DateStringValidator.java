@@ -1,4 +1,4 @@
-package com.example.mobilele.exceptions.dataFormatChecker;
+package com.example.mobilele.validators.dataFormatChecker;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -6,7 +6,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 public class DateStringValidator implements ConstraintValidator<ValidDateString, String> {

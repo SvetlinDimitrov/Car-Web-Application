@@ -1,6 +1,6 @@
 package com.example.mobilele.domain.dtos.user;
 
-import com.example.mobilele.domain.constants.ModelCategory;
+import com.example.mobilele.utils.constants.ModelCategory;
 import com.example.mobilele.domain.entity.Model;
 import lombok.Data;
 

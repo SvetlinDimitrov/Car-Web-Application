@@ -1,8 +1,8 @@
 package com.example.mobilele.domain.dtos.user;
 
 import com.example.mobilele.domain.entity.User;
-import com.example.mobilele.exceptions.passwordChecker.PasswordsMatchConstrain;
-import com.example.mobilele.exceptions.usernameChecker.NotUsedUsernameConstraint;
+import com.example.mobilele.validators.passwordChecker.PasswordsMatchConstrain;
+import com.example.mobilele.validators.usernameChecker.NotUsedUsernameConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

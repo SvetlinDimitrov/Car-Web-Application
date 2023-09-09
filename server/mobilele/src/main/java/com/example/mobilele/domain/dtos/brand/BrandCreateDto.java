@@ -1,7 +1,7 @@
 package com.example.mobilele.domain.dtos.brand;
 
 import com.example.mobilele.domain.entity.Brand;
-import com.example.mobilele.exceptions.dataFormatChecker.ValidDateString;
+import com.example.mobilele.validators.dataFormatChecker.ValidDateString;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

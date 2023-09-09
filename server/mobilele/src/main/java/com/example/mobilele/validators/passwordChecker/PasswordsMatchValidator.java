@@ -1,4 +1,4 @@
-package com.example.mobilele.exceptions.passwordChecker;
+package com.example.mobilele.validators.passwordChecker;
 
 import com.example.mobilele.domain.dtos.user.UserRegisterDto;
 import jakarta.validation.ConstraintValidator;

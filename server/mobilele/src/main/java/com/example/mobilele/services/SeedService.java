@@ -1,5 +1,6 @@
 package com.example.mobilele.services;
 
+import com.example.mobilele.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public abstract class SeedService {
     protected abstract Boolean isEmpty();
-    protected abstract void seed();
+    protected abstract void seed() throws NotFoundException;
 
     public void initData(){
         if(isEmpty()){
