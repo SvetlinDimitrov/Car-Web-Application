@@ -47,7 +47,7 @@ public class JwtUtil {
             user.setJwtToken(token.getToken());
             return user;
         } catch (NotFoundException | WrongCredentialsException e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }

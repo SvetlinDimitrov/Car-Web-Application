@@ -20,39 +20,10 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class BrandServiceImp extends SeedService {
+public class BrandServiceImp{
 
     private final BrandRepository brandRepository;
     private final EntityHelper entityHelper;
-
-
-    @Override
-    protected Boolean isEmpty() {
-        return brandRepository.count() == 0;
-    }
-
-    @Override
-    protected void seed() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        brandRepository.saveAll(List.of(
-                Brand.builder()
-                        .name("BMW")
-                        .created(LocalDate.parse("1916-03-07", formatter))
-                        .modified(LocalDate.parse("1924-07-11", formatter))
-                        .build(),
-                Brand.builder()
-                        .name("Mercedes-Benz")
-                        .created(LocalDate.parse("1926-02-18", formatter))
-                        .modified(LocalDate.parse("1956-02-13", formatter))
-                        .build(),
-                Brand.builder()
-                        .name("Audi")
-                        .created(LocalDate.parse("1909-06-16", formatter))
-                        .modified(null)
-                        .build()
-        ));
-    }
 
     public List<BrandView> getAllBrandsView() {
         return brandRepository.findAll()
@@ -103,6 +74,30 @@ public class BrandServiceImp extends SeedService {
         Brand brand = entityHelper.findBrandById(brandId);
 
         brandRepository.delete(brand);
+    }
+
+    public void seed() {
+        if(brandRepository.count() == 0){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            brandRepository.saveAll(List.of(
+                    Brand.builder()
+                            .name("BMW")
+                            .created(LocalDate.parse("1916-03-07", formatter))
+                            .modified(LocalDate.parse("1924-07-11", formatter))
+                            .build(),
+                    Brand.builder()
+                            .name("Mercedes-Benz")
+                            .created(LocalDate.parse("1926-02-18", formatter))
+                            .modified(LocalDate.parse("1956-02-13", formatter))
+                            .build(),
+                    Brand.builder()
+                            .name("Audi")
+                            .created(LocalDate.parse("1909-06-16", formatter))
+                            .modified(null)
+                            .build()
+            ));
+        }
     }
 
     private void validBrandUsername(String name) throws AlreadyExistException {

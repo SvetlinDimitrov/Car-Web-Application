@@ -1,6 +1,7 @@
 package com.example.mobilele.services;
 
 import com.example.mobilele.config.security.UserPrincipal;
+import com.example.mobilele.domain.entity.UserRole;
 import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.Role;
 import com.example.mobilele.domain.dtos.user.UserEditDto;
@@ -27,46 +28,12 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImp extends SeedService {
+public class UserServiceImp{
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
     private final EntityHelper entityHelper;
-
-
-    @Override
-    protected Boolean isEmpty() {
-        return userRepository.count() == 0;
-    }
-
-    @Override
-    protected void seed() {
-        userRepository.saveAll(List.of(
-                User.builder()
-                        .isActive(Boolean.TRUE)
-                        .created(LocalDate.now())
-                        .firstName("Zaharia")
-                        .lastName("Stepanov")
-                        .imageUrl("https://yt3.googleusercontent.com/ytc/AOPolaROJsray4rabTdqph4zpBJAt_01EwS5FbVlNfus=s900-c-k-c0x00ffffff-no-rj")
-                        .modified(null)
-                        .password(passwordEncoder.encode("12345"))
-                        .username("Zaharia")
-                        .userRoles(userRoleRepository.findAll())
-                        .build(),
-                User.builder()
-                        .isActive(Boolean.TRUE)
-                        .created(LocalDate.now())
-                        .firstName("Ivan")
-                        .lastName("Ivanov")
-                        .imageUrl("https://upload.wikimedia.org/wikipedia/commons/2/27/Ivan_Abadjiev.jpg")
-                        .modified(null)
-                        .password(passwordEncoder.encode("12345"))
-                        .username("Ivan")
-                        .userRoles(userRoleRepository.findAll())
-                        .build()
-        ));
-    }
 
     public User getById(String userId) throws NotFoundException, WrongCredentialsException {
         return entityHelper.findUserById(userId);
@@ -139,5 +106,42 @@ public class UserServiceImp extends SeedService {
     public void deleteUser(String id) throws NotFoundException, WrongCredentialsException {
         User user = getById(id);
         userRepository.delete(user);
+    }
+    @Modifying
+    public void deleteUserById(String id) throws NotFoundException, WrongCredentialsException {
+        User user = entityHelper.findUserById(id);
+        userRepository.delete(user);
+    }
+
+    public boolean isAdmin(User user){
+        return user.getUserRoles().stream().map(UserRole::getRole).anyMatch(r-> r.equals(Role.ADMIN));
+    }
+    public void seed() {
+        if(userRepository.count() == 0){
+            userRepository.saveAll(List.of(
+                    User.builder()
+                            .isActive(Boolean.TRUE)
+                            .created(LocalDate.now())
+                            .firstName("Zaharia")
+                            .lastName("Stepanov")
+                            .imageUrl("https://yt3.googleusercontent.com/ytc/AOPolaROJsray4rabTdqph4zpBJAt_01EwS5FbVlNfus=s900-c-k-c0x00ffffff-no-rj")
+                            .modified(null)
+                            .password(passwordEncoder.encode("12345"))
+                            .username("Zaharia")
+                            .userRoles(userRoleRepository.findAll())
+                            .build(),
+                    User.builder()
+                            .isActive(Boolean.TRUE)
+                            .created(LocalDate.now())
+                            .firstName("Ivan")
+                            .lastName("Ivanov")
+                            .imageUrl("https://upload.wikimedia.org/wikipedia/commons/2/27/Ivan_Abadjiev.jpg")
+                            .modified(null)
+                            .password(passwordEncoder.encode("12345"))
+                            .username("Ivan")
+                            .userRoles(userRoleRepository.findAll())
+                            .build()
+            ));
+        }
     }
 }

@@ -27,26 +27,36 @@ public class UserController {
         this.jwtUtil = jwtUtil;
     }
 
-    @GetMapping()
-    public ResponseEntity<UserView> userDetails(@AuthenticationPrincipal UserPrincipal principal) throws NotFoundException, WrongCredentialsException {
-        UserView userView = new UserView(userServiceImp.getById(principal.getId()));
-        return new ResponseEntity<>(userView, HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<List<UserView>> getUser(@AuthenticationPrincipal UserPrincipal principal,
+                                                @RequestParam(value = "all" , required = false) Boolean all,
+                                                      @RequestParam(value = "id" , required = false) String id) throws NotFoundException, WrongCredentialsException {
+        if(all != null && all){
+            return new ResponseEntity<>(userServiceImp.getAllUsers() , HttpStatus.OK);
+        }else if (id != null){
+            return new ResponseEntity<>(List.of(new UserView(userServiceImp.getById(id))), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(List.of(new UserView(userServiceImp.getById(principal.getId()))), HttpStatus.OK);
     }
-    @PatchMapping("/edit")
+    @PatchMapping
     public ResponseEntity<UserView> editUser(@Valid @RequestBody UserEditDto editDto,
                                              BindingResult bindingResult,
-                                             @AuthenticationPrincipal UserPrincipal userPrincipal) throws WrongCredentialsException, NotFoundException {
+                                             @AuthenticationPrincipal UserPrincipal userPrincipal,
+                                             @RequestParam(value = "id" , required = false) String id) throws WrongCredentialsException, NotFoundException {
         if(bindingResult.hasErrors()){
             throw new WrongCredentialsException(bindingResult.getAllErrors());
         }
 
+        if(id != null){
+            if(userServiceImp.isAdmin(userServiceImp.getById(userPrincipal.getId()))){
+                UserView userView = userServiceImp.editUser(editDto, id);
+                return new ResponseEntity<>(userView , HttpStatus.OK);
+            }else{
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        }
         UserView userView = userServiceImp.editUser(editDto, userPrincipal.getId());
         return new ResponseEntity<>(userView , HttpStatus.OK);
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<UserView>> allUsers() {
-        return new ResponseEntity<>(userServiceImp.getAllUsers() , HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -74,7 +84,16 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserPrincipal principal) throws NotFoundException, WrongCredentialsException {
+    public ResponseEntity<String> deleteUser(@AuthenticationPrincipal UserPrincipal principal,
+                                             @RequestParam(value = "id" , required = false) String id) throws NotFoundException, WrongCredentialsException {
+        if(id != null){
+            if(userServiceImp.isAdmin(userServiceImp.getById(principal.getId()))){
+                userServiceImp.deleteUserById(id);
+                return new ResponseEntity<>("User with id : "+id +" was successfuly deleted",HttpStatus.NO_CONTENT);
+            }else{
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied ! Only Admins can do that.");
+            }
+        }
         userServiceImp.deleteUser(principal.getId());
         return new ResponseEntity<>(principal.getUsername() +"was successfuly deleted",HttpStatus.NO_CONTENT);
     }

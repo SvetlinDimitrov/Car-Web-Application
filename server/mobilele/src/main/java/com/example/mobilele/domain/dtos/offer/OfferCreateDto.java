@@ -1,5 +1,6 @@
 package com.example.mobilele.domain.dtos.offer;
 import com.example.mobilele.domain.entity.Offer;
+import com.example.mobilele.validators.yearChecker.MaxCurrentYear;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
@@ -29,7 +30,9 @@ public class OfferCreateDto {
     @NotBlank(message = "you need to write an transmission type")
     private String transmission;
 
-    @NotNull(message = "year must be filed")
+    @NotNull(message = "year must not be blank")
+    @Min(value = 0 , message = "year should be a positive number")
+    @MaxCurrentYear
     private Integer year;
 
     @NotBlank(message = "model name should not be blank")
@@ -40,6 +43,7 @@ public class OfferCreateDto {
                 .description(description)
                 .imageUrl(imageUrl == null ? "https://w7.pngwing.com/pngs/67/521/png-transparent-computer-icons-offers-text-logo-discount-thumbnail.png" : imageUrl)
                 .price(price)
+                .mileage(mileage)
                 .year(year)
                 .created(LocalDate.now())
                 .modified(null)

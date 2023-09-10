@@ -8,13 +8,13 @@ import java.util.List;
 
 @Data
 public class UserPrincipalDto {
-    private String jwtToken;
+    private String token;
     private String id;
     private String username;
     private List<String> authorities;
 
     public UserPrincipalDto (UserPrincipal entity){
-        this.jwtToken = entity.getJwtToken();
+        this.token = entity.getJwtToken();
         this.id = entity.getId();
         this.username = entity.getUsername();
         this.authorities = entity.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();

@@ -16,11 +16,11 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        userRoleService.initData();
-        userServiceImp.initData();
-        brandServiceImp.initData();
-        modelServiceImp.initData();
-        offerServiceImp.initData();
+        userRoleService.seed();
+        userServiceImp.seed();
+        brandServiceImp.seed();
+        modelServiceImp.seed();
+        offerServiceImp.seed();
 
     }
 }

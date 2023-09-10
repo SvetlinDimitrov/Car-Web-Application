@@ -39,7 +39,7 @@ public class ExceptionController {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         String errorMessage = "Invalid request body. Please check your request data.";
-        return new ResponseEntity<>(errorMessage , HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorMessage + "\n" + ex.getMessage().split(":")[0], HttpStatus.BAD_REQUEST);
     }
 
 }

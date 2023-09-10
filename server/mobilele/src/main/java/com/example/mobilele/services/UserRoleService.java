@@ -10,24 +10,20 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class UserRoleService extends SeedService {
+public class UserRoleService{
 
     private UserRoleRepository userRoleRepository;
-
-    @Override
-    protected Boolean isEmpty() {
-        return userRoleRepository.count() == 0;
+    public void seed() {
+        if(userRoleRepository.count() == 0){
+            userRoleRepository.saveAll(List.of(
+                    UserRole.builder()
+                            .role(Role.USER)
+                            .build()
+                    , UserRole.builder()
+                            .role(Role.ADMIN)
+                            .build()
+            ));
+        }
     }
 
-    @Override
-    protected void seed() {
-        userRoleRepository.saveAll(List.of(
-                UserRole.builder()
-                        .role(Role.USER)
-                        .build()
-                ,UserRole.builder()
-                        .role(Role.ADMIN)
-                        .build()
-        ));
-    }
 }
