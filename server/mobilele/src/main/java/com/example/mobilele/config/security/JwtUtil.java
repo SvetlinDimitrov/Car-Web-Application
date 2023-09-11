@@ -29,7 +29,7 @@ public class JwtUtil {
     public String createJwtToken(String userId) {
         return JWT.create()
                 .withSubject(String.valueOf(userId))
-                .withExpiresAt(Instant.now().plus(Duration.of(30, ChronoUnit.MINUTES)))
+                .withExpiresAt(Instant.now().plus(Duration.of(12, ChronoUnit.HOURS)))
                 .sign(Algorithm.HMAC256(secret));
     }
 

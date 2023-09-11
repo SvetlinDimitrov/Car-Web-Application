@@ -12,6 +12,7 @@ import com.example.mobilele.utils.EntityHelper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@CrossOrigin
 public class BrandServiceImp{
 
     private final BrandRepository brandRepository;
