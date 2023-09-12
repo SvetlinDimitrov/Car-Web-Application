@@ -1,12 +1,11 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext  , useState} from "react";
 import { Link } from "react-router-dom";
 
 import { getAllOffers } from "../../utils/OfferService";
 import { AuthContext } from "../../contexts/UserAuth";
-import { OfferContext } from "../../contexts/OfferContext";
 
 const Offer = () => {
-  const { offers , initOffers } = useContext(OfferContext)
+  const [ offers , initOffers ] = useState([])
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -15,7 +14,7 @@ const Offer = () => {
       initOffers(data);
     };
     getData();
-  }, [user, initOffers]);
+  }, [user]);
 
   return (
     <div className="container-fluid">
@@ -30,7 +29,7 @@ const Offer = () => {
               <img className="card-img-top" src={offer.imageUrl} alt="Car" />
             </div>
             <div className="card-body pb-1">
-              <h5 className="card-title">{offer.year} {offer.model.name}</h5>
+              <h5 className="card-title">{offer.year} {offer.brandName} {offer.model.name}</h5>
             </div>
             <ul className="offer-details list-group list-group-flush">
               <li className="list-group-item">

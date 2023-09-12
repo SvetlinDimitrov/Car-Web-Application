@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import {AuthContext} from "../../contexts/UserAuth";
+import { AuthContext } from "../../contexts/UserAuth";
 
 const Header = () => {
   const { user } = useContext(AuthContext);
@@ -28,6 +28,11 @@ const Header = () => {
           {user.id ? (
             <>
               <li className="nav-item">
+                <Link className="nav-link" to="/brands">
+                  All Brands
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link className="nav-link" to="/models">
                   All Models
                 </Link>
@@ -42,45 +47,38 @@ const Header = () => {
                   Add Offer
                 </Link>
               </li>
-              <li className="nav-item dropdown">
-                <Link
-                  className="nav-link dropdown-toggle"
-                  to="/"
-                  id="navbarDropdown"
-                  role="button"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  Admin
-                </Link>
-                <div className="dropdown-menu" labelled="navbarDropdown">
-                  <Link className="dropdown-item" to="/">
-                    Action
-                  </Link>
-                  <Link className="dropdown-item" to="/">
-                    Another action
-                  </Link>
-                  <div className="dropdown-divider"></div>
-                  <Link className="dropdown-item" to="/">
-                    Something else here
-                  </Link>
-                </div>
-              </li>
+              {user.authorities.some((r) => r === "ROLE_ADMIN") && (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/brands/add">
+                      Add Brand
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/">
+                      Add Model
+                    </Link>
+                  </li>
+                </>
+              )}
 
               <li className="nav-item">
                 <div className="form-inline my-2 my-lg-0 border px-3">
-                  <div className="logged-user" text="Welcome, Gosho"></div>
-                  <Link className="nav-link" to="/users/logout">
-                    Logout
-                  </Link>
+                  <div
+                    className="logged-user"
+                    text={`Welcome ${user.username}!`}
+                  >
+                    <Link className="nav-link" to="/logout">
+                      Logout
+                    </Link>
+                  </div>
                 </div>
               </li>
             </>
           ) : (
             <>
               <li className="nav-item">
-                <Link className="nav-link" to="/models">
+                <Link className="nav-link" to="/brands">
                   All Brands
                 </Link>
               </li>

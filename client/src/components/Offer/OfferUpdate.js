@@ -1,145 +1,318 @@
+import { useParams , useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+
+import { getOfferById , updateOffer} from "../../utils/OfferService";
+import { getAllBrands } from "../../utils/BrandService";
+
+import { AuthContext } from "../../contexts/UserAuth";
+import { useErrorOfferForm } from "../../hooks/useErrorForm";
+
+const keys = {
+  modelName: "modelName",
+  price: "price",
+  engine: "engine",
+  year: "year",
+  description: "description",
+  mileage: "mileage",
+  transmission: "transmission",
+};
+const initValues = {
+  [keys.modelName]: "",
+  [keys.price]: "",
+  [keys.engine]: "",
+  [keys.year]: "",
+  [keys.description]: "",
+  [keys.imageUrl]: "",
+  [keys.mileage]: "",
+  [keys.transmission]: "",
+};
 const OfferUpdate = () => {
+ 
+  const [ mainError, setMainError ] = useState("");
+  const [ brands, setBrands ] = useState([]);
+  const [ offer, setOffer ] = useState({});
+  const { id } = useParams();
+  const { user } = useContext(AuthContext);
+  const { errors, onChangeError, onBluerError } = useErrorOfferForm(initValues);
+  const navigate = useNavigate();
+  
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getOfferById(id, user);
+        setOffer(data[0]);
+      } catch {
+        //TODO:cath the error
+      }
+    };
+    fetchData();
+  }, [id, setOffer, user]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getAllBrands();
+      setBrands(data);
+    };
+    fetchData();
+  }, []);
+
+  const onChange = (e) => {
+    const { name , value} = e.target;
+
+    if(name === keys.modelName){
+      setOffer((state) => ({ ...state, model:{...state.model , 'name':value }}));
+    }else{
+      setOffer((state) => ({ ...state, [name]: value }));
+    }
+    
+  };
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+      await updateOffer(user, offer);
+      navigate(`/offers/details/${offer.id}`);
+    } catch (e) {
+      Object.keys(keys).forEach((key) => {
+        const object = {
+          name: key,
+          value: offer[key],
+        };
+        onBluerError({ target: object });
+      });
+      setMainError(e.message);
+    }
+  };
+
   return (
     <div className="container">
       <h2 className="text-center text-white">Update Offer</h2>
-      <form
-        method="POST"
-        className="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
-      >
-        <div className="row">
-          <div className="form-group col-md-6 mb-3">
-            <label className="text-center text-white font-weight-bold" htmlFor="model3">
-              Model
-            </label>
-            <select id="model3" className="form-control">
-              <option value="">- Select a model -</option>
-              <optgroup label="Brand name">
-                <option>Model</option>
-              </optgroup>
-            </select>
-            <p className="errors alert alert-danger">Vehicle model is required.</p>
-          </div>
-          <div className="form-group col-md-6 mb-3">
-            <label htmlFor="price3" className="text-white font-weight-bold">
-              Price
-            </label>
-            <input
-              id="price3"
-              type="number"
-              min="0"
-              step="100"
-              className="form-control"
-              placeholder="Suggested price"
-            />
-            <p className="errors alert alert-danger">
-              Suggested price is required.
-            </p>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-md-6 mb-3">
-            <label className="text-center text-white font-weight-bold" htmlFor="engine3">
-              Engine
-            </label>
-            <select id="engine3" className="form-control">
-              <option value="">- Select engine type -</option>
-              <option>Engine type</option>
-            </select>
-            <p className="errors alert alert-danger">Engine type is required.</p>
-          </div>
-          <div className="form-group col-md-6 mb-3">
-            <label
-              className="text-center text-white font-weight-bold"
-              htmlFor="transmission3"
-            >
-              Transmission
-            </label>
-            <select id="transmission3" className="form-control">
-              <option value="">- Select transmission type -</option>
-              <option> Transmission type</option>
-            </select>
-            <p className="errors alert alert-danger">
-              Transmission type is required.
-            </p>
-          </div>
-        </div>
-        <div className="row">
-          <div className="form-group col-md-6 mb-3">
-            <label htmlFor="year3" className="text-white font-weight-bold">
-              Year
-            </label>
-            <input
-              id="year3"
-              type="number"
-              min="1900"
-              max="2099"
-              step="1"
-              className="form-control"
-              placeholder="Manufacturing year"
-            />
-            <p className="errors alert alert-danger">
-              Manufacturing year is required.
-            </p>
-          </div>
-          <div className="form-group col-md-6 mb-3">
-            <label htmlFor="mileage3" className="text-white font-weight-bold">
-              Mileage
-            </label>
-            <input
-              id="mileage3"
-              type="number"
-              min="0"
-              max="900000"
-              step="1000"
-              className="form-control"
-              placeholder="Mileage in kilometers"
-            />
-            <p className="errors alert alert-danger">
-              Mileage in kilometers is required.
-            </p>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label className="text-white font-weight-bold" htmlFor="description3">
-            Description
-          </label>
-          <textarea
-            id="description3"
-            type="textarea"
-            className="form-control"
-            rows="3"
-            placeholder="Description"
-          ></textarea>
-          <p className="errors alert alert-danger">Description is required.</p>
-        </div>
-        <div className="form-group">
-          <label className="text-white font-weight-bold" htmlFor="imageUrl3">
-            Image URL
-          </label>
-          <input
-            id="imageUrl3"
-            type="url"
-            className="form-control"
-            placeholder="Put vehicle image URL here"
-          />
-          <p className="errors alert alert-danger">
-            Vehicle image URL is required.
-          </p>
-        </div>
-
-        <div className="row">
-          <div className="col col-md-4">
-            <div className="button-holder d-flex">
+      {offer.id && (
+        <form
+          method="POST"
+          onSubmit={onSubmit}
+          className="main-form mx-auto col-md-8 d-flex flex-column justify-content-center"
+        >
+          <div className="row">
+            <div className="form-group col-md-6 mb-3">
+              <label
+                className="text-center text-white font-weight-bold"
+                htmlFor="model"
+              >
+                Model
+              </label>
+              <select
+                id="model"
+                className="form-control"
+                name={keys.modelName}
+                value={offer.model.name}
+                onChange={(e) => {
+                  onChange(e);
+                  onChangeError(e);
+                }}
+                onBlur={onBluerError}
+              >
+                <option value="">- Select a model -</option>
+                {brands.map((brand) => {
+                  return (
+                    <optgroup key={brand.id} label={brand.name}>
+                      {brand.modelList.map((model) => {
+                        return <option key={model.id}>{model.name}</option>;
+                      })}
+                    </optgroup>
+                  );
+                })}
+              </select>
+              {errors[keys.modelName] !== "" && (
+                <p className="errors alert alert-danger">Model is required</p>
+              )}
+            </div>
+            <div className="form-group col-md-6 mb-3">
+              <label htmlFor="price" className="text-white font-weight-bold">
+                Price
+              </label>
               <input
-                type="submit"
-                className="btn btn-info btn-lg"
-                value="Update Offer"
+                id="price"
+                type="number"
+                min="0"
+                step="100"
+                className="form-control"
+                placeholder="Suggested price"
+                name={keys.price}
+                value={offer[keys.price]}
+                onChange={(e) => {
+                  onChange(e);
+                  onChangeError(e);
+                }}
+                onBlur={onBluerError}
               />
+              {errors.price !== "" && (
+                <p className="errors alert alert-danger">
+                  {errors[keys.price]}
+                </p>
+              )}
             </div>
           </div>
-        </div>
-      </form>
+          <div className="row">
+            <div className="form-group col-md-6 mb-3">
+              <label
+                className="text-center text-white font-weight-bold"
+                htmlFor="engine"
+              >
+                Engine
+              </label>
+              <select
+                id="engine"
+                className="form-control"
+                name={keys.engine}
+                value={offer[keys.engine]}
+                onChange={(e) => {
+                  onChange(e);
+                  onChangeError(e);
+                }}
+                onBlur={onBluerError}
+              >
+                <option value="">- Select engine type -</option>
+                <option value="GASOLINE">GASOLINE</option>
+                <option value="DIESEL">DIESEL</option>
+                <option value="ELECTRIC">ELECTRIC</option>
+                <option value="HYBRID">HYBRID</option>
+              </select>
+              {errors[keys.engine] !== "" && (
+                <p className="errors alert alert-danger">
+                  Engine type is required.
+                </p>
+              )}
+            </div>
+            <div className="form-group col-md-6 mb-3">
+              <label
+                className="text-center text-white font-weight-bold"
+                htmlFor="transmission"
+              >
+                Transmission
+              </label>
+              <select
+                id="transmission"
+                className="form-control"
+                name={keys.transmission}
+                value={offer[keys.transmission]}
+                onChange={(e) => {
+                  onChange(e);
+                  onChangeError(e);
+                }}
+                onBlur={onBluerError}
+              >
+                <option value="">- Select transmission type -</option>
+                <option value="MANUAL">MANUAL</option>
+                <option value="AUTOMATIC">AUTOMATIC</option>
+              </select>
+              {errors[keys.transmission] !== "" && (
+                <p className="errors alert alert-danger">
+                  Transmission type is required.
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="form-group col-md-6 mb-3">
+              <label htmlFor="year" className="text-white font-weight-bold">
+                Year
+              </label>
+              <input
+                id="year"
+                type="number"
+                min="1900"
+                max="2099"
+                step="1"
+                className="form-control"
+                placeholder="Manufacturing year"
+                name={keys.year}
+                value={offer[keys.year]}
+                onChange={(e) => {
+                  onChange(e);
+                  onChangeError(e);
+                }}
+                onBlur={onBluerError}
+              />
+              {errors[keys.year] !== "" && (
+                <p className="errors alert alert-danger">{errors[keys.year]}</p>
+              )}
+            </div>
+            <div className="form-group col-md-6 mb-3">
+              <label htmlFor="mileage" className="text-white font-weight-bold">
+                Mileage
+              </label>
+              <input
+                id="mileage"
+                type="number"
+                min="0"
+                max="900000"
+                step="1000"
+                className="form-control"
+                placeholder="Mileage in kilometers"
+                name={keys.mileage}
+                value={offer[keys.mileage]}
+                onChange={(e) => {
+                  onChange(e);
+                  onChangeError(e);
+                }}
+                onBlur={onBluerError}
+              />
+
+              {errors[keys.mileage] !== "" && (
+                <p className="errors alert alert-danger">
+                  {errors[keys.mileage]}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label
+              className="text-white font-weight-bold"
+              htmlFor="description"
+            >
+              Description
+            </label>
+            <textarea
+              id="description"
+              type="textarea"
+              className="form-control"
+              rows="3"
+              placeholder="Description"
+              name={keys.description}
+              value={offer[keys.description]}
+              onChange={(e) => {
+                onChange(e);
+                onChangeError(e);
+              }}
+              onBlur={onBluerError}
+            ></textarea>
+            {errors[keys.description] !== "" && (
+              <p className="errors alert alert-danger">
+                {errors[keys.description]}
+              </p>
+            )}
+          </div>
+          {Object.values(errors).every((error) => error === "") &&
+            mainError !== "" && (
+              <p className="errors alert alert-danger">{mainError}</p>
+            )}
+
+          <div className="row">
+            <div className="col col-md-4">
+              <div className="button-holder d-flex">
+                <input
+                  type="submit"
+                  className="btn btn-info btn-lg"
+                  value="Submit Offer"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

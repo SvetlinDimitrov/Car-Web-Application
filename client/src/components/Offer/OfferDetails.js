@@ -14,7 +14,6 @@ const Details = () => {
       const data = await getOfferById(id, user);
       setOffer(data[0]);
     };
-
     fetchData();
   }, [id, user]);
 
@@ -26,13 +25,16 @@ const Details = () => {
           <div className="offer card col-sm-2 col-md-3  col-lg-4 m-1 p-0">
             <div className="card-body pb-1">
               <h5 className="card-title">
-                {offer.year} {offer.model.name}
+                {offer.year} {offer.brandName} {offer.model.name}
               </h5>
             </div>
             <ul className="offer-details list-group list-group-flush">
               <li className="list-group-item">
                 <div className="card-text">
                   <span>• Mileage : {offer.mileage}</span>
+                </div>
+                <div className="card-text">
+                  <span>• Year : {offer.year}</span>
                 </div>
                 <div className="card-text">
                   <span>• Price : {offer.price}</span>
@@ -56,12 +58,12 @@ const Details = () => {
                 </div>
               </li>
             </ul>
-            {user.id === offer.seller.id && (
+            {(user.id === offer.seller.id || user.authorities.some(r => r === 'ROLE_ADMIN')) && (
               <div className="card-body">
-                <Link className="card-link" to="/">
+                <Link className="card-link" to={`/offers/update/${offer.id}`}>
                   Update
                 </Link>
-                <Link className="card-link" to="/">
+                <Link className="card-link" to={`/offers/delete/${offer.id}`}>
                   Delete
                 </Link>
               </div>

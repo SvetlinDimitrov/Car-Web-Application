@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 
-// import { OfferContext } from "../../contexts/OfferContext";
 import { useForm } from "../../hooks/useForm";
-import {AuthContext} from "../../contexts/UserAuth";
+import { AuthContext } from "../../contexts/UserAuth";
 import { useErrorOfferForm } from "../../hooks/useErrorForm";
 import { createOffer } from "../../utils/OfferService";
+import { getAllBrands } from "../../utils/BrandService";
 
 const keys = {
   modelName: "modelName",
@@ -13,7 +13,6 @@ const keys = {
   engine: "engine",
   year: "year",
   description: "description",
-  imageUrl: "imageUrl",
   mileage: "mileage",
   transmission: "transmission",
 };
@@ -28,23 +27,34 @@ const initValues = {
   [keys.transmission]: "",
 };
 const OfferAdd = () => {
-  // const { setFetch } = useContext(OfferContext);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { errors, onChangeError } = useErrorOfferForm(initValues);
+  const { errors, onChangeError, onBluerError } = useErrorOfferForm(initValues);
+  const [mainError, setMainError] = useState("");
+  const [brands, setBrands] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () =>{
+      const data = await getAllBrands();
+      setBrands(data);
+    }
+    fetchData();
+  }, []);
 
   const submitHandler = async (values) => {
     try {
-      await createOffer(user , values);
-      navigate('/offers');
+      await createOffer(user, values);
+      navigate("/offers");
     } catch (e) {
-      Object.keys(values).forEach((key) => {
+      Object.keys(keys).forEach((key) => {
         const object = {
           name: key,
-          value: errors[key],
+          value: values[key],
         };
-        onChangeError({ target: object });
+        onBluerError({ target: object });
       });
+      setMainError(e.message);
     }
   };
 
@@ -73,17 +83,26 @@ const OfferAdd = () => {
               value={values[keys.modelName]}
               onChange={(e) => {
                 onChange(e);
+                onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBluerError}
             >
               <option value="">- Select a model -</option>
-              <optgroup label="Brand name">
-                <option>Model</option>
-              </optgroup>
+              {brands.map(brand => {
+                return (
+                  <optgroup key={brand.id} label={brand.name}>
+                    {brand.modelList.map(model => {
+                      return (
+                        <option key={model.id} >{model.name}</option>
+                      );
+                    })}
+                  </optgroup>
+                );
+              })}
             </select>
             {errors[keys.modelName] !== "" && (
               <p className="errors alert alert-danger">
-                Vechicle model is required.
+                Model is required
               </p>
             )}
           </div>
@@ -102,12 +121,13 @@ const OfferAdd = () => {
               value={values[keys.price]}
               onChange={(e) => {
                 onChange(e);
+                onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBluerError}
             />
             {errors.price !== "" && (
               <p className="errors alert alert-danger">
-                Suggested price is required.
+                {errors[keys.price]}
               </p>
             )}
           </div>
@@ -127,11 +147,15 @@ const OfferAdd = () => {
               value={values[keys.engine]}
               onChange={(e) => {
                 onChange(e);
+                onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBluerError}
             >
               <option value="">- Select engine type -</option>
-              <option>Engine type</option>
+              <option value='GASOLINE'>GASOLINE</option>
+              <option value='DIESEL'>DIESEL</option>
+              <option value='ELECTRIC'>ELECTRIC</option>
+              <option value='HYBRID'>HYBRID</option>
             </select>
             {errors[keys.engine] !== "" && (
               <p className="errors alert alert-danger">
@@ -153,11 +177,13 @@ const OfferAdd = () => {
               value={values[keys.transmission]}
               onChange={(e) => {
                 onChange(e);
+                onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBluerError}
             >
               <option value="">- Select transmission type -</option>
-              <option> Transmission type</option>
+              <option value="MANUAL">MANUAL</option>
+              <option value="AUTOMATIC">AUTOMATIC</option>
             </select>
             {errors[keys.transmission] !== "" && (
               <p className="errors alert alert-danger">
@@ -183,12 +209,13 @@ const OfferAdd = () => {
               value={values[keys.year]}
               onChange={(e) => {
                 onChange(e);
+                onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBluerError}
             />
             {errors[keys.year] !== "" && (
               <p className="errors alert alert-danger">
-                Manufacturing year is required.
+                {errors[keys.year]}
               </p>
             )}
           </div>
@@ -208,13 +235,14 @@ const OfferAdd = () => {
               value={values[keys.mileage]}
               onChange={(e) => {
                 onChange(e);
+                onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBluerError}
             />
 
             {errors[keys.mileage] !== "" && (
               <p className="errors alert alert-danger">
-                Mileage in kilometers is required.
+                {errors[keys.mileage]}
               </p>
             )}
           </div>
@@ -236,37 +264,17 @@ const OfferAdd = () => {
               onChange(e);
               onChangeError(e);
             }}
-            onBlur={onChangeError}
+            onBlur={onBluerError}
           ></textarea>
           {errors[keys.description] !== "" && (
             <p className="errors alert alert-danger">
-              Description is required.
+              {errors[keys.description]}
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="text-white font-weight-bold" htmlFor="imageUrl">
-            Image URL
-          </label>
-          <input
-            id="imageUrl"
-            type="url"
-            className="form-control"
-            placeholder="Put vehicle image URL here"
-            name={keys.imageUrl}
-            value={values[keys.imageUrl]}
-            onChange={(e) => {
-              onChange(e);
-              onChangeError(e);
-            }}
-            onBlur={onChangeError}
-          />
-          {errors[keys.imageUrl] !== "" && (
-            <p className="errors alert alert-danger">
-              Vehicle image URL is required.
-            </p>
-          )}
-        </div>
+        {Object.values(errors).every(error => error === "") && mainError !== "" && (
+          <p className="errors alert alert-danger">{mainError}</p>
+        )}
 
         <div className="row">
           <div className="col col-md-4">

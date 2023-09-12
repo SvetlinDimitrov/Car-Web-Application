@@ -32,7 +32,7 @@ const Register = () => {
   };
 
   const { values, onChange, onSubmit } = useForm(initValues, submitHandler);
-  const { errors, onChangeError } =useErrorRegisterForm(initValues);
+  const { errors, onChangeError ,onBlurError } =useErrorRegisterForm(initValues);
 
   return (
     <div className="container">
@@ -60,7 +60,7 @@ const Register = () => {
                 onChange(e);
                 onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBlurError}
               onClick={() => {
                 setError("");
               }}
@@ -88,7 +88,7 @@ const Register = () => {
                 onChange(e);
                 onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBlurError}
               onClick={() => {
                 setError("");
               }}
@@ -119,7 +119,7 @@ const Register = () => {
                 onChange(e);
                 onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBlurError}
               onClick={() => {
                 setError("");
               }}
@@ -148,7 +148,7 @@ const Register = () => {
                 onChange(e);
                 onChangeError(e);
               }}
-              onBlur={onChangeError}
+              onBlur={onBlurError}
               onClick={() => {
                 setError("");
               }}

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import {getAllBrands} from '../../utils/BrandService';
+import {getAllModel} from '../../utils/ModelService';
 
 const Model = () => {
   const [brands, setBrands] = useState([]);
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getAllBrands();
+      const data = await getAllModel();
       setBrands(data);
     } 
     getData();
@@ -17,12 +17,7 @@ const Model = () => {
       <h2 className="text-center text-white m-3">All Brands</h2>
       <div className="row mb-4 d-flex justify-content-around">
         <div className="brand-section col-md-5 mr-auto d-flex flex-column">
-          <h2>
-            Car brand:
-            <span>Brand name</span>
-          </h2>
           <div>
-            Models:
             <table>
               <thead>
                 <tr>

@@ -32,7 +32,7 @@ const Login = () => {
   }
 
   const {values , onChange , onSubmit , } = useForm(initValues,submitHandler);
-  const {errors , onChangeError} = useErrorLoginForm(initValues);
+  const {errors, onChangeError ,onBluerError} = useErrorLoginForm(initValues);
 
   return (
     <div className="container">
@@ -60,7 +60,7 @@ const Login = () => {
               onChange(e);
               onChangeError(e);
             }}
-            onBlur={onChangeError}
+            onBlur={onBluerError}
             onClick={()=>{setError('')}}
           />
           {errors[keys.username].length !== 0 &&
@@ -84,7 +84,7 @@ const Login = () => {
               onChange(e);
               onChangeError(e);
             }}
-            onBlur={onChangeError}
+            onBlur={onBluerError}
             onClick={()=>{setError('')}}
           />
           {errors[keys.password].length !== 0 &&

@@ -53,3 +53,44 @@ export const createOffer = async (user, offer) => {
     throw new Error(errorData);
   }
 };
+
+export const deleteOffer = async (id , user) =>{
+  const queryParams = new URLSearchParams({
+    'id': id,
+  });
+  const response = await fetch(`http://127.0.0.1:8080/car/api/offer?${queryParams}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+      "Content-Type": "application/json",
+    }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(errorData);
+  }
+};
+
+export const updateOffer = async (user, offer) => {
+  const queryParams = new URLSearchParams({
+    'id': offer.id,
+  });
+
+  const updateOffer = {...offer , modelName : offer.model.name}
+
+  const response = await fetch(`http://127.0.0.1:8080/car/api/offer?${queryParams}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updateOffer),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.text();
+    throw new Error(errorData);
+  }
+};
+
