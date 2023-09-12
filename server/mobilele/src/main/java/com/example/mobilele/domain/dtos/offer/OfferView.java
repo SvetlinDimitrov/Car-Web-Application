@@ -19,6 +19,7 @@ public class OfferView {
     private String modified;
     private OfferModelView model;
     private OfferUserView seller;
+    private String brandName;
 
     public OfferView(Offer offer) {
         this.id = offer.getId().toString();
@@ -33,6 +34,7 @@ public class OfferView {
         this.modified = offer.getModified() == null ? "-" : offer.getModified().toString();
         this.model = new OfferModelView(offer.getModel());
         this.seller = new OfferUserView(offer.getSeller());
+        this.brandName = offer.getModel().getBrand().getName();
 
     }
 }
