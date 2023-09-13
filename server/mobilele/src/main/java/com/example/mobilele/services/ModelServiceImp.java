@@ -55,10 +55,7 @@ public class ModelServiceImp {
     public ModelView edit(ModelEditDto modelEditDto, String id) throws NotFoundException, WrongCredentialsException {
         Model model = entityHelper.findModelById(id);
 
-        if (modelEditDto.getName() != null) {
-            if (findByName(modelEditDto.getName())) {
-                throw new WrongCredentialsException("This name already exits in the date base.");
-            }
+        if (modelEditDto.getName() != null && !modelEditDto.getName().equals(model.getName())) {
             model.setName(modelEditDto.getName());
         }
         if (modelEditDto.getCategory() != null) {

@@ -49,13 +49,11 @@ public class BrandServiceImp{
 
     @Modifying
     public BrandView edit(BrandEditDto brandEditDto, String id)
-            throws NotFoundException, AlreadyExistException, WrongCredentialsException {
+            throws NotFoundException, WrongCredentialsException {
 
         Brand brand = entityHelper.findBrandById(id);
 
-        validBrandUsername(brandEditDto.getName());
-
-        if (brandEditDto.getName() != null) {
+        if (brandEditDto.getName() != null && !brand.getName().equals(brandEditDto.getName())) {
             if (brandEditDto.getName().trim().length() >= 4) {
                 brand.setName(brandEditDto.getName());
             } else {

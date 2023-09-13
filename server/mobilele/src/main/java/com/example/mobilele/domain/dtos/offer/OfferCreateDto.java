@@ -17,8 +17,6 @@ public class OfferCreateDto {
     @NotBlank(message = "you need to write an engine type")
     private String engine;
 
-    private String imageUrl;
-
     @NotNull(message = "mileage should not be blank")
     @Min(value = 0 , message = "mileage cannot be negative")
     private Integer mileage;
@@ -41,7 +39,6 @@ public class OfferCreateDto {
     public Offer toOffer(){
         return Offer.builder()
                 .description(description)
-                .imageUrl(imageUrl == null ? "https://w7.pngwing.com/pngs/67/521/png-transparent-computer-icons-offers-text-logo-discount-thumbnail.png" : imageUrl)
                 .price(price)
                 .mileage(mileage)
                 .year(year)

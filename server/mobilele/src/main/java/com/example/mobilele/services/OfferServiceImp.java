@@ -61,6 +61,7 @@ public class OfferServiceImp {
         User user = entityHelper.findUserById(userId);
         Model model = entityHelper.findModelByName(offerCreateDto.getModelName());
 
+        offer.setImageUrl(model.getImageUrl());
         offer.setEngine(getEngineByName(offerCreateDto.getEngine()));
         offer.setTransmission(getTransmissionByName(offerCreateDto.getTransmission()));
         offer.setSeller(user);

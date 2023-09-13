@@ -30,7 +30,7 @@ public class ModelCreateDto {
     public Model toModel(){
         return Model.builder()
                 .name(name)
-                .imageUrl(imageUrl == null ? "https://cdn-icons-png.flaticon.com/512/55/55283.png" : imageUrl)
+                .imageUrl(imageUrl == null || imageUrl.isBlank() ? "https://www.topgear.com/sites/default/files/news/image/2015/04/Large%20Image_10372.jpg" : imageUrl)
                 .created(created)
                 .generation(generation)
                 .build();
