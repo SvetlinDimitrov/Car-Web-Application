@@ -1,9 +1,9 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect , useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { AuthContext } from "../../contexts/UserAuth";
 import { useErrorBrandForm } from "../../hooks/useErrorForm";
-import { getBrandById  , updateBrand} from "../../utils/BrandService";
+import { getBrandById, updateBrand } from "../../utils/BrandService";
 
 const keys = {
   name: "name",
@@ -15,21 +15,44 @@ const initValues = {
   [keys.created]: "",
 };
 const BrandChange = () => {
+  const hasRunRef = useRef(false);
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user } = useContext(AuthContext);
-  const [ brand, setBrand ] = useState({});
+  const { user, logout } = useContext(AuthContext);
+  const [brand, setBrand] = useState({});
 
   const [mainError, setMainError] = useState("");
   const { errors, onBluerError, onChangeError } = useErrorBrandForm(initValues);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getBrandById(user, id);
-      setBrand(data[0]);
+      const response = await getBrandById(user, id);
+      if(!response.ok){
+        if(response.status === 401){
+          logout();
+          navigate('/login');
+        }else {
+          const responseError = await response.text();
+          Object.keys(keys).forEach((key) => {
+            const object = {
+              name: key,
+              value: brand[key],
+            };
+            onBluerError({ target: object });
+          });
+          setMainError(responseError.message);
+        }
+      }else{
+        const data = await response.json();
+        setBrand(data[0]);
+      }  
     };
-    fetchData();
-  }, [id , user]);
+    if(!hasRunRef.current){
+      hasRunRef.current = true;
+      fetchData();
+    }
+    
+  }, [id, user , brand , logout , navigate , onBluerError]);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -39,18 +62,24 @@ const BrandChange = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      await updateBrand(user, brand);
+    const response = await updateBrand(user, brand);
+    if (!response.ok) {
+      if (response.status === 401) {
+        logout();
+        navigate("/login");
+      } else {
+        const responseError = await response.text();
+        Object.keys(keys).forEach((key) => {
+          const object = {
+            name: key,
+            value: brand[key],
+          };
+          onBluerError({ target: object });
+        });
+        setMainError(responseError);
+      }
+    } else {
       navigate("/brands");
-    } catch (e) {
-      Object.keys(keys).forEach((key) => {
-        const object = {
-          name: key,
-          value: brand[key],
-        };
-        onBluerError({ target: object });
-      });
-      setMainError(e.message);
     }
   };
 

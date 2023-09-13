@@ -85,6 +85,29 @@ export const useErrorOfferForm = (initValues) => {
   return { errors, onBluerError, onChangeError };
 };
 
+export const useErrorModelForm = (initValues) => {
+  const [errors, setErrors] = useState(initValues);
+
+  const onBluerError = (e) => {
+    const { name, value } = e.target;
+
+    if (errors[name] === "") {
+      if(name !== 'imageUrl'){
+        checkEmpty(name, value, "Cannot be empty", setErrors);
+      }
+    }
+    
+  };
+
+  const onChangeError = (e) => {
+    const { name } = e.target;
+
+    setErrors((state) => ({ ...state, [name]: "" }));
+  };
+
+  return { errors, onBluerError, onChangeError };
+};
+
 export const useErrorBrandForm = (initValues) => {
   const [ errors, setErrors ] = useState(initValues);
 

@@ -1,21 +1,33 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link , useNavigate} from "react-router-dom";
 
 import { AuthContext } from "../../contexts/UserAuth";
 import { getOfferById } from "../../utils/OfferService";
 
 const Details = () => {
-  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { user , logout } = useContext(AuthContext);
   const { id } = useParams();
   const [offer, setOffer] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getOfferById(id, user);
-      setOffer(data[0]);
+      const response = await getOfferById(id, user);
+
+      if(!response.ok){
+        if(response === 401){
+          logout();
+          navigate('/login');
+        }else{
+          navigate('/error')
+        }
+      }else{
+        const data = await response.json();
+        setOffer(data[0]);
+      }  
     };
     fetchData();
-  }, [id, user]);
+  }, [id, user , logout , navigate]);
 
   return (
     <div className="container-fluid">

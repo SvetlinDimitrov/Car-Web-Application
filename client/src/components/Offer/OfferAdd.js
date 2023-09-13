@@ -27,34 +27,41 @@ const initValues = {
   [keys.transmission]: "",
 };
 const OfferAdd = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const { errors, onChangeError, onBluerError } = useErrorOfferForm(initValues);
   const [mainError, setMainError] = useState("");
   const [brands, setBrands] = useState([]);
 
-
   useEffect(() => {
-    const fetchData = async () =>{
+    const fetchData = async () => {
       const data = await getAllBrands();
       setBrands(data);
-    }
+    };
     fetchData();
   }, []);
 
   const submitHandler = async (values) => {
-    try {
-      await createOffer(user, values);
+    const response = await createOffer(user, values);
+    if (!response.ok) {
+      if (response.status === 401) {
+        logout();
+        navigate("login");
+      } else {
+        const responseError = await response.text();
+
+        Object.keys(keys).forEach((key) => {
+          const object = {
+            name: key,
+            value: values[key],
+          };
+          onBluerError({ target: object });
+          
+        });
+        setMainError(responseError);
+      }
+    } else {
       navigate("/offers");
-    } catch (e) {
-      Object.keys(keys).forEach((key) => {
-        const object = {
-          name: key,
-          value: values[key],
-        };
-        onBluerError({ target: object });
-      });
-      setMainError(e.message);
     }
   };
 
@@ -88,22 +95,18 @@ const OfferAdd = () => {
               onBlur={onBluerError}
             >
               <option value="">- Select a model -</option>
-              {brands.map(brand => {
+              {brands.map((brand) => {
                 return (
                   <optgroup key={brand.id} label={brand.name}>
-                    {brand.modelList.map(model => {
-                      return (
-                        <option key={model.id} >{model.name}</option>
-                      );
+                    {brand.modelList.map((model) => {
+                      return <option key={model.id}>{model.name}</option>;
                     })}
                   </optgroup>
                 );
               })}
             </select>
             {errors[keys.modelName] !== "" && (
-              <p className="errors alert alert-danger">
-                Model is required
-              </p>
+              <p className="errors alert alert-danger">Model is required</p>
             )}
           </div>
           <div className="form-group col-md-6 mb-3">
@@ -126,9 +129,7 @@ const OfferAdd = () => {
               onBlur={onBluerError}
             />
             {errors.price !== "" && (
-              <p className="errors alert alert-danger">
-                {errors[keys.price]}
-              </p>
+              <p className="errors alert alert-danger">{errors[keys.price]}</p>
             )}
           </div>
         </div>
@@ -152,10 +153,10 @@ const OfferAdd = () => {
               onBlur={onBluerError}
             >
               <option value="">- Select engine type -</option>
-              <option value='GASOLINE'>GASOLINE</option>
-              <option value='DIESEL'>DIESEL</option>
-              <option value='ELECTRIC'>ELECTRIC</option>
-              <option value='HYBRID'>HYBRID</option>
+              <option value="GASOLINE">GASOLINE</option>
+              <option value="DIESEL">DIESEL</option>
+              <option value="ELECTRIC">ELECTRIC</option>
+              <option value="HYBRID">HYBRID</option>
             </select>
             {errors[keys.engine] !== "" && (
               <p className="errors alert alert-danger">
@@ -214,9 +215,7 @@ const OfferAdd = () => {
               onBlur={onBluerError}
             />
             {errors[keys.year] !== "" && (
-              <p className="errors alert alert-danger">
-                {errors[keys.year]}
-              </p>
+              <p className="errors alert alert-danger">{errors[keys.year]}</p>
             )}
           </div>
           <div className="form-group col-md-6 mb-3">
@@ -272,9 +271,10 @@ const OfferAdd = () => {
             </p>
           )}
         </div>
-        {Object.values(errors).every(error => error === "") && mainError !== "" && (
-          <p className="errors alert alert-danger">{mainError}</p>
-        )}
+        {Object.values(errors).every((error) => error === "") &&
+          mainError !== "" && (
+            <p className="errors alert alert-danger">{mainError}</p>
+          )}
 
         <div className="row">
           <div className="col col-md-4">

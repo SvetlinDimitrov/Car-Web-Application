@@ -1,20 +1,28 @@
 import { useEffect, useContext  , useState} from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 
 import { getAllOffers } from "../../utils/OfferService";
 import { AuthContext } from "../../contexts/UserAuth";
 
 const Offer = () => {
+  const navigate = useNavigate();
   const [ offers , initOffers ] = useState([])
-  const { user } = useContext(AuthContext);
+  const { user , logout } = useContext(AuthContext);
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getAllOffers(user);
-      initOffers(data);
+      const response = await getAllOffers(user);
+      if(response.status === 401){
+        logout();
+        navigate('/login');
+      }else{
+        const data = await response.json();
+        initOffers(data);
+      }
+      
     };
     getData();
-  }, [user]);
+  }, [user , logout , navigate]);
 
   return (
     <div className="container-fluid">

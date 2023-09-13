@@ -19,23 +19,29 @@ const initValues = {
 
 const BrandAdd = () => {
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext);
+  const { user , logout } = useContext(AuthContext);
   const [mainError, setMainError] = useState("");
   const { errors, onBluerError, onChangeError } = useErrorBrandForm(initValues);
 
   const handleSubmit = async (data) => {
-    try {
-      await createBrand(user, data);
+    const response = await createBrand(user, data);
+    if(!response.ok){
+      if(response.status === 401){
+        logout();
+        navigate("/");
+      }else{
+        const errorMessage = await response.text();
+        Object.keys(keys).forEach((key) => {
+          const object = {
+            name: key,
+            value: data[key],
+          };
+          onBluerError({ target: object });
+        });
+        setMainError(errorMessage);
+      }
+    }else{
       navigate("/brands");
-    } catch (e) {
-      Object.keys(keys).forEach((key) => {
-        const object = {
-          name: key,
-          value: data[key],
-        };
-        onBluerError({ target: object });
-      });
-      setMainError(e.message);
     }
   };
 
@@ -76,11 +82,11 @@ const BrandAdd = () => {
           )}
         </div>
         <div className="form-group">
-        <label htmlFor="date" className="text-white font-weight-bold">
+          <label htmlFor="date" className="text-white font-weight-bold">
             Name
           </label>
           <input
-          id="date"
+            id="date"
             type="date"
             value={values[keys.created]}
             name={keys.created}

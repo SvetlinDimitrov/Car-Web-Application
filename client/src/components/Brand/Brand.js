@@ -52,7 +52,7 @@ const Brand = () => {
                         </th>
                         <th>
                           <button type="button" className="btn btn-danger">
-                          <Link className="nav-link" to="/">
+                          <Link className="nav-link" to={`/brands/delete/${b.id}`}>
                               Delete
                             </Link>
                           </button>

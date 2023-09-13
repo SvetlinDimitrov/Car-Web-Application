@@ -1,7 +1,7 @@
-import { useParams , useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 
-import { getOfferById , updateOffer} from "../../utils/OfferService";
+import { getOfferById, updateOffer } from "../../utils/OfferService";
 import { getAllBrands } from "../../utils/BrandService";
 
 import { AuthContext } from "../../contexts/UserAuth";
@@ -27,27 +27,31 @@ const initValues = {
   [keys.transmission]: "",
 };
 const OfferUpdate = () => {
- 
-  const [ mainError, setMainError ] = useState("");
-  const [ brands, setBrands ] = useState([]);
-  const [ offer, setOffer ] = useState({});
+  const [mainError, setMainError] = useState("");
+  const [brands, setBrands] = useState([]);
+  const [offer, setOffer] = useState({});
   const { id } = useParams();
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const { errors, onChangeError, onBluerError } = useErrorOfferForm(initValues);
   const navigate = useNavigate();
-  
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const data = await getOfferById(id, user);
+      const response = await getOfferById(id, user);
+      if (!response.ok) {
+        if (response.status === 401) {
+          logout();
+          navigate("/login");
+        } else {
+          navigate("/error");
+        }
+      } else {
+        const data = await response.json();
         setOffer(data[0]);
-      } catch {
-        //TODO:cath the error
       }
     };
     fetchData();
-  }, [id, setOffer, user]);
+  }, [id, setOffer, user, logout, navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,30 +62,40 @@ const OfferUpdate = () => {
   }, []);
 
   const onChange = (e) => {
-    const { name , value} = e.target;
+    const { name, value } = e.target;
 
-    if(name === keys.modelName){
-      setOffer((state) => ({ ...state, model:{...state.model , 'name':value }}));
-    }else{
+    if (name === keys.modelName) {
+      setOffer((state) => ({
+        ...state,
+        model: { ...state.model, name: value },
+      }));
+    } else {
       setOffer((state) => ({ ...state, [name]: value }));
     }
-    
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-    
-    try {
-      await updateOffer(user, offer);
+
+    const response = await updateOffer(user, offer);
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        logout();
+        navigate("login");
+      } else {
+        const responseError = await response.text();
+
+        Object.keys(keys).forEach((key) => {
+          const object = {
+            name: key,
+            value: offer[key],
+          };
+          onBluerError({ target: object });
+        });
+        setMainError(responseError);
+      }
+    } else {
       navigate(`/offers/details/${offer.id}`);
-    } catch (e) {
-      Object.keys(keys).forEach((key) => {
-        const object = {
-          name: key,
-          value: offer[key],
-        };
-        onBluerError({ target: object });
-      });
-      setMainError(e.message);
     }
   };
 

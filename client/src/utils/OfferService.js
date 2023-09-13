@@ -3,7 +3,7 @@ export const getAllOffers = async (user) => {
     all: true,
   });
 
-  const response = await fetch(
+  return await fetch(
     `http://127.0.0.1:8080/car/api/offer?${queryParams}`,
     {
       method: "GET",
@@ -13,17 +13,13 @@ export const getAllOffers = async (user) => {
       },
     }
   );
-
-  const result = await response.json();
-
-  return result;
 };
 
 export const getOfferById = async (id, user) => {
   const queryParams = new URLSearchParams({
     offerId: id,
   });
-  const response = await fetch(
+  return await fetch(
     `http://127.0.0.1:8080/car/api/offer?${queryParams}`,
     {
       method: "GET",
@@ -33,13 +29,10 @@ export const getOfferById = async (id, user) => {
       },
     }
   );
-
-  const result = await response.json();
-  return result;
 };
 
 export const createOffer = async (user, offer) => {
-  const response = await fetch("http://127.0.0.1:8080/car/api/offer", {
+ return await fetch("http://127.0.0.1:8080/car/api/offer", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -47,29 +40,19 @@ export const createOffer = async (user, offer) => {
     },
     body: JSON.stringify(offer),
   });
-
-  if (!response.ok) {
-    const errorData = await response.text();
-    throw new Error(errorData);
-  }
 };
 
 export const deleteOffer = async (id , user) =>{
   const queryParams = new URLSearchParams({
     'id': id,
   });
-  const response = await fetch(`http://127.0.0.1:8080/car/api/offer?${queryParams}`, {
+  return await fetch(`http://127.0.0.1:8080/car/api/offer?${queryParams}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${user.token}`,
       "Content-Type": "application/json",
     }
   });
-
-  if (!response.ok) {
-    const errorData = await response.text();
-    throw new Error(errorData);
-  }
 };
 
 export const updateOffer = async (user, offer) => {
@@ -79,7 +62,7 @@ export const updateOffer = async (user, offer) => {
 
   const updateOffer = {...offer , modelName : offer.model.name}
 
-  const response = await fetch(`http://127.0.0.1:8080/car/api/offer?${queryParams}`, {
+  return await fetch(`http://127.0.0.1:8080/car/api/offer?${queryParams}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -87,10 +70,5 @@ export const updateOffer = async (user, offer) => {
     },
     body: JSON.stringify(updateOffer),
   });
-
-  if (!response.ok) {
-    const errorData = await response.text();
-    throw new Error(errorData);
-  }
 };
 
