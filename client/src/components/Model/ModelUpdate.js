@@ -87,7 +87,7 @@ const ModelUpdate = () => {
         logout();
         navigate("/login");
       } else {
-        const responseError = await response.text();
+        const responseError = await response.json();
 
         Object.keys(keys).forEach((key) => {
           const object = {
@@ -96,7 +96,7 @@ const ModelUpdate = () => {
           };
           onBluerError({ target: object });
         });
-        setMainError(responseError);
+        setMainError(responseError.messages.join('\n'));
       }
     } else {
       navigate("/models");

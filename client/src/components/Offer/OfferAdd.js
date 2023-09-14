@@ -49,7 +49,7 @@ const OfferAdd = () => {
         logout();
         navigate("/login");
       } else {
-        const responseError = response.text();
+        const responseError = await response.json();
         Object.keys(keys).forEach((key) => {
           const object = {
             name: key,
@@ -57,7 +57,7 @@ const OfferAdd = () => {
           };
           onBluerError({ target: object });
         });
-        setMainError(responseError);
+        setMainError(responseError.messages.join('\n'));
       }
     }else{
       navigate('/offers');

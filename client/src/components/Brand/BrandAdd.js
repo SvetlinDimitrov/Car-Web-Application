@@ -30,7 +30,7 @@ const BrandAdd = () => {
         logout();
         navigate("/");
       }else{
-        const errorMessage = await response.text();
+        const errorMessage = await response.json();
         Object.keys(keys).forEach((key) => {
           const object = {
             name: key,
@@ -38,7 +38,7 @@ const BrandAdd = () => {
           };
           onBluerError({ target: object });
         });
-        setMainError(errorMessage);
+        setMainError(errorMessage.messages.join('\n'));
       }
     }else{
       navigate("/brands");

@@ -83,7 +83,7 @@ const OfferUpdate = () => {
         logout();
         navigate("login");
       } else {
-        const responseError = await response.text();
+        const responseError = await response.json();
 
         Object.keys(keys).forEach((key) => {
           const object = {
@@ -92,7 +92,7 @@ const OfferUpdate = () => {
           };
           onBluerError({ target: object });
         });
-        setMainError(responseError);
+        setMainError(responseError.messages.join('\n'));
       }
     } else {
       navigate(`/offers/details/${offer.id}`);
