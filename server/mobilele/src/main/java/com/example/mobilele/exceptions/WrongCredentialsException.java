@@ -3,17 +3,26 @@ package com.example.mobilele.exceptions;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.ObjectError;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WrongCredentialsException extends Exception {
+    private final List<String> messages = new ArrayList<>();
+
     public WrongCredentialsException(List<ObjectError> errors) {
-        super(errors.stream()
+        messages.addAll(errors.stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.joining("\n")));
+                .toList());
+
     }
 
     public WrongCredentialsException(String message) {
-        super(message);
+        messages.add(message);
+    }
+
+    public List<String> getMessages() {
+        return messages.stream()
+                .filter(m -> !m.isBlank())
+                .toList();
     }
 }
