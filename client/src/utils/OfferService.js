@@ -32,7 +32,7 @@ export const getOfferById = async (id, user) => {
 };
 
 export const createOffer = async (user, offer) => {
- return await fetch("http://127.0.0.1:8080/car/api/offer", {
+ return  await fetch("http://127.0.0.1:8080/car/api/offer", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${user.token}`,

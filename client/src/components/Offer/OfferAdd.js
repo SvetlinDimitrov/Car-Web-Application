@@ -43,31 +43,31 @@ const OfferAdd = () => {
 
   const submitHandler = async (values) => {
     const response = await createOffer(user, values);
+
     if (!response.ok) {
       if (response.status === 401) {
         logout();
-        navigate("login");
+        navigate("/login");
       } else {
-        const responseError = await response.text();
-
+        const responseError = response.text();
         Object.keys(keys).forEach((key) => {
           const object = {
             name: key,
             value: values[key],
           };
           onBluerError({ target: object });
-          
         });
         setMainError(responseError);
       }
-    } else {
-      navigate("/offers");
+    }else{
+      navigate('/offers');
     }
   };
 
   const { values, onChange, onSubmit } = useForm(initValues, submitHandler);
-
+  
   return (
+    
     <div className="container">
       <h2 className="text-center text-white">Upload Offer</h2>
       <form
