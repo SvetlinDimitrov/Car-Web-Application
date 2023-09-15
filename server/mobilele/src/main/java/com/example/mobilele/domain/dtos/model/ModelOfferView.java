@@ -1,9 +1,13 @@
 package com.example.mobilele.domain.dtos.model;
 import com.example.mobilele.domain.entity.Offer;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ModelOfferView {
 
     private String id;

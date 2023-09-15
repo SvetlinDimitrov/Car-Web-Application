@@ -74,9 +74,9 @@ public class ModelServiceImp {
             model.setBrand(entityHelper.findBrandByName(modelEditDto.getBrandName()));
         }
 
-        Model saved = modelRepository.save(model);
+        modelRepository.save(model);
 
-        return new ModelView(saved);
+        return new ModelView(model);
     }
 
     @Modifying
@@ -90,7 +90,7 @@ public class ModelServiceImp {
                     Model.builder()
                             .name("BMW X6")
                             .created(2008)
-                            .brand(entityHelper.findBrandByName("BMW"))
+                            .brand(entityHelper.findBrandByName("BMWW"))
                             .category(ModelCategory.Car)
                             .imageUrl("https://s1.cdn.autoevolution.com/images/models/BMW_X6-2023_main.jpg")
                             .generation(5)
@@ -98,7 +98,7 @@ public class ModelServiceImp {
                     Model.builder()
                             .name("BMW M4 Convertible")
                             .created(2014)
-                            .brand(entityHelper.findBrandByName("BMW"))
+                            .brand(entityHelper.findBrandByName("BMWW"))
                             .category(ModelCategory.Car)
                             .imageUrl("https://s1.cdn.autoevolution.com/images/models/BMW_M4-Competition-Convertible-M-xDrive-2021_main.jpg")
                             .generation(2)
@@ -106,7 +106,7 @@ public class ModelServiceImp {
                     Model.builder()
                             .name("BMW iX")
                             .created(2021)
-                            .brand(entityHelper.findBrandByName("BMW"))
+                            .brand(entityHelper.findBrandByName("BMWW"))
                             .category(ModelCategory.Car)
                             .imageUrl("https://s1.cdn.autoevolution.com/images/models/BMW_iX-2021_main.jpg")
                             .generation(1)

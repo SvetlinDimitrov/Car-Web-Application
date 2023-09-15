@@ -1,11 +1,13 @@
 package com.example.mobilele.domain.dtos.brand;
 
 import com.example.mobilele.domain.entity.Brand;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class BrandView {
     private String id;
     private String name;

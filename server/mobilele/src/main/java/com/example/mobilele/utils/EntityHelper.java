@@ -37,12 +37,12 @@ public class EntityHelper {
     @Transactional
     public Brand findBrandById(String id) throws NotFoundException, WrongCredentialsException {
         return brandRepository.findById(convertToUUID(id))
-                .orElseThrow(() -> new NotFoundException("Brand with id: " + id + " does not exist"));
+                .orElseThrow(() -> new NotFoundException("Brand with id :" + id + " does not exists"));
     }
     @Transactional
     public Model findModelById(String id) throws WrongCredentialsException, NotFoundException {
         return modelRepository.findById(convertToUUID(id))
-                .orElseThrow(() -> new NotFoundException("Model with id : " + id + " does not exist"));
+                .orElseThrow(() -> new NotFoundException("Model with id :" + id + " does not exists"));
     }
 
 

@@ -2,12 +2,16 @@ package com.example.mobilele.domain.dtos.offer;
 import com.example.mobilele.domain.entity.Offer;
 import com.example.mobilele.validators.yearChecker.MaxCurrentYear;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OfferCreateDto {
 
     @NotBlank(message = "description cannot be blank")

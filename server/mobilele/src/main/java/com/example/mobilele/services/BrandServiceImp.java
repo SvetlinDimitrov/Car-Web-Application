@@ -60,10 +60,13 @@ public class BrandServiceImp{
                 throw new WrongCredentialsException("username should be at last 4 chars long");
             }
         }
+        if(brandEditDto.getCreated() != null ){
+            brand.setCreated(brandEditDto.getCreated());
+        }
         brand.setModified(LocalDate.now());
-        Brand saved = brandRepository.save(brand);
+        brandRepository.save(brand);
 
-        return new BrandView(saved);
+        return new BrandView(brand);
 
 
     }
@@ -82,7 +85,7 @@ public class BrandServiceImp{
 
             brandRepository.saveAll(List.of(
                     Brand.builder()
-                            .name("BMW")
+                            .name("BMWW")
                             .created(LocalDate.parse("1916-03-07", formatter))
                             .modified(LocalDate.parse("1924-07-11", formatter))
                             .build(),

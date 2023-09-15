@@ -1,9 +1,11 @@
 package com.example.mobilele.domain.dtos.brand;
 
 import com.example.mobilele.domain.entity.Model;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class BrandModelView {
     private String id;
     private String name;

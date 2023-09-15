@@ -1,4 +1,5 @@
 package com.example.mobilele.config.security;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,7 +7,6 @@ import org.springframework.security.core.userdetails.User;
 
 @Getter
 @Setter
-
 public class UserPrincipal extends User {
 
     private String jwtToken;

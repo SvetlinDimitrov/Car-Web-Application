@@ -1,8 +1,12 @@
 package com.example.mobilele.domain.dtos.offer;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OfferEditDto {
 
     private String description;

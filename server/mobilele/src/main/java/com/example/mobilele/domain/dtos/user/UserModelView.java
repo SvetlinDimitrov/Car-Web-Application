@@ -2,12 +2,16 @@ package com.example.mobilele.domain.dtos.user;
 
 import com.example.mobilele.utils.constants.ModelCategory;
 import com.example.mobilele.domain.entity.Model;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserModelView {
 
     private UUID id;

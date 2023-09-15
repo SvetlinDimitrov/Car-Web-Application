@@ -4,12 +4,14 @@ import com.example.mobilele.domain.entity.Brand;
 import com.example.mobilele.validators.dataFormatChecker.ValidDateString;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Data
+@AllArgsConstructor
 public class BrandCreateDto {
 
     @NotBlank(message = "name can`t be blank")

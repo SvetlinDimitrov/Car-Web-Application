@@ -38,7 +38,6 @@ public class OfferServiceImp {
     @Transactional
     public OfferView getOfferViewById(String id) throws WrongCredentialsException, NotFoundException {
         return new OfferView(entityHelper.findOfferById(id));
-
     }
     @Transactional
     public List<OfferView> getAllOfferViews() {
@@ -55,6 +54,7 @@ public class OfferServiceImp {
                 .map(OfferView::new)
                 .toList();
     }
+
     public void save(OfferCreateDto offerCreateDto, String userId) throws WrongCredentialsException, NotFoundException {
         Offer offer = offerCreateDto.toOffer();
 
@@ -124,13 +124,19 @@ public class OfferServiceImp {
         }
 
         offer.setModified(LocalDate.now());
-        Offer saved = offerRepository.save(offer);
-        return new OfferView(saved);
+        offerRepository.save(offer);
+        return new OfferView(offer);
     }
     @Modifying
     public void deleteOffer(String id) throws NotFoundException, WrongCredentialsException {
         Offer offer = entityHelper.findOfferById(id);
         offerRepository.delete(offer);
+    }
+    public boolean userContainOffer(String userId, String offerId) throws NotFoundException, WrongCredentialsException {
+        return entityHelper.findUserById(userId)
+                .getOfferList()
+                .stream()
+                .anyMatch(o->o.getId().toString().equals(offerId));
     }
     public void seed() {
         if (offerRepository.count() == 0) {
@@ -251,10 +257,5 @@ public class OfferServiceImp {
     }
 
 
-    public boolean userContainOffer(String userId, String offerId) throws NotFoundException, WrongCredentialsException {
-        return entityHelper.findUserById(userId)
-                .getOfferList()
-                .stream()
-                .anyMatch(o->o.getId().toString().equals(offerId));
-    }
+
 }

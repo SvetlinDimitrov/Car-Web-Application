@@ -5,12 +5,16 @@ import com.example.mobilele.validators.passwordChecker.PasswordsMatchConstrain;
 import com.example.mobilele.validators.usernameChecker.NotUsedUsernameConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @PasswordsMatchConstrain
 public class UserRegisterDto{
 

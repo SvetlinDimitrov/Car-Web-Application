@@ -5,26 +5,22 @@ import com.example.mobilele.domain.entity.UserRole;
 import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.Role;
 import com.example.mobilele.domain.dtos.user.UserEditDto;
-import com.example.mobilele.domain.dtos.user.UserLoginDro;
+import com.example.mobilele.domain.dtos.user.UserLoginDto;
 import com.example.mobilele.domain.dtos.user.UserRegisterDto;
 import com.example.mobilele.domain.dtos.user.UserView;
 import com.example.mobilele.domain.entity.User;
 import com.example.mobilele.exceptions.NotFoundException;
 import com.example.mobilele.exceptions.WrongCredentialsException;
-import com.example.mobilele.repos.OfferRepository;
 import com.example.mobilele.repos.UserRepository;
 import com.example.mobilele.repos.UserRoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -50,10 +46,10 @@ public class UserServiceImp{
         userRepository.save(user);
     }
 
-    public UserPrincipal login(UserLoginDro userLoginDro) throws WrongCredentialsException {
-        Optional<User> user = userRepository.findByUsername(userLoginDro.getUsername());
+    public UserPrincipal login(UserLoginDto userLoginDto) throws WrongCredentialsException {
+        Optional<User> user = userRepository.findByUsername(userLoginDto.getUsername());
 
-        if (user.isPresent() && passwordEncoder.matches(userLoginDro.getPassword(), user.get().getPassword())) {
+        if (user.isPresent() && passwordEncoder.matches(userLoginDto.getPassword(), user.get().getPassword())) {
             return new UserPrincipal(user.get());
         }
         throw new WrongCredentialsException("Username or password does not match");
@@ -97,19 +93,14 @@ public class UserServiceImp{
         }
 
         user.setModified(LocalDate.now());
-        User save = userRepository.save(user);
+        userRepository.save(user);
 
-        return new UserView(save);
+        return new UserView(user);
     }
 
     @Modifying
     public void deleteUser(String id) throws NotFoundException, WrongCredentialsException {
         User user = getById(id);
-        userRepository.delete(user);
-    }
-    @Modifying
-    public void deleteUserById(String id) throws NotFoundException, WrongCredentialsException {
-        User user = entityHelper.findUserById(id);
         userRepository.delete(user);
     }
 

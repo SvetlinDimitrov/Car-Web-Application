@@ -70,13 +70,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserPrincipalDto> loginUser(@Valid @RequestBody UserLoginDro userLoginDro,
+    public ResponseEntity<UserPrincipalDto> loginUser(@Valid @RequestBody UserLoginDto userLoginDto,
                                                    BindingResult bindingResult) throws WrongCredentialsException {
         if(bindingResult.hasErrors()){
             throw new WrongCredentialsException(bindingResult.getAllErrors());
         }
 
-        UserPrincipal userPrincipal = userServiceImp.login(userLoginDro);
+        UserPrincipal userPrincipal = userServiceImp.login(userLoginDto);
         String jwtToken = jwtUtil.createJwtToken(userPrincipal.getId());
         userPrincipal.setJwtToken(jwtToken);
 
@@ -88,7 +88,7 @@ public class UserController {
                                              @RequestParam(value = "id" , required = false) String id) throws NotFoundException, WrongCredentialsException {
         if(id != null){
             if(userServiceImp.isAdmin(userServiceImp.getById(principal.getId()))){
-                userServiceImp.deleteUserById(id);
+                userServiceImp.deleteUser(id);
                 return new ResponseEntity<>("User with id : "+id +" was successfuly deleted",HttpStatus.NO_CONTENT);
             }else{
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied ! Only Admins can do that.");
