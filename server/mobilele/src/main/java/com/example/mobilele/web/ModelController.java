@@ -1,5 +1,6 @@
 package com.example.mobilele.web;
 
+import com.example.mobilele.config.swagger.ModelControllerSwagger;
 import com.example.mobilele.domain.dtos.model.ModelCreateDto;
 import com.example.mobilele.domain.dtos.model.ModelEditDto;
 import com.example.mobilele.domain.dtos.model.ModelView;
@@ -21,15 +22,17 @@ import java.util.List;
 public class ModelController {
 
     private final ModelServiceImp modelServiceImp;
+    private final ModelControllerSwagger modelControllerSwagger;
+
 
     @GetMapping
-    public ResponseEntity<List<ModelView>> getAllModels(@RequestParam(value = "id",required = false) String modelId,
-                                                        @RequestParam(value = "name" , required = false) String name) throws NotFoundException, WrongCredentialsException {
+    public ResponseEntity<List<ModelView>> getModel(@RequestParam(value = "id", required = false) String modelId,
+                                                    @RequestParam(value = "name", required = false)String name) throws NotFoundException, WrongCredentialsException {
 
-        if(modelId != null){
+        if (modelId != null) {
             ModelView modelView = modelServiceImp.getModelViewById(modelId);
             return new ResponseEntity<>(List.of(modelView), HttpStatus.OK);
-        }else if (name != null){
+        } else if (name != null) {
             ModelView modelView = modelServiceImp.getModelViewByName(name);
             return new ResponseEntity<>(List.of(modelView), HttpStatus.OK);
         }
@@ -52,10 +55,11 @@ public class ModelController {
     public ResponseEntity<ModelView> editModel(@RequestBody ModelEditDto modelEditDto,
                                                @RequestParam("id") String id) throws NotFoundException, WrongCredentialsException {
 
-        ModelView modelView = modelServiceImp.edit(modelEditDto , id);
+        ModelView modelView = modelServiceImp.edit(modelEditDto, id);
         return new ResponseEntity<>(modelView, HttpStatus.OK);
 
     }
+
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteModel(@RequestParam("id") String modelId) throws NotFoundException, WrongCredentialsException {
 

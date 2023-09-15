@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         request -> request
+                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/car/api/user/login").anonymous()
                                 .requestMatchers(HttpMethod.POST, "/car/api/user/register").anonymous()
                                 .requestMatchers(HttpMethod.GET, "/car/api/brand").permitAll()
