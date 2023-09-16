@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserOfferView {
 
-    private UUID id;
+    private Long id;
     private String description;
     private EngineType engine;
     private String imageUrl;

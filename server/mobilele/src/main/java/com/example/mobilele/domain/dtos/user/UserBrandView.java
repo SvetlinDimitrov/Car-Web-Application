@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserBrandView {
 
-    private UUID id;
+    private Long id;
     private String name;
     private String created;
     private String modified;

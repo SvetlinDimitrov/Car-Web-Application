@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserView {
 
-    private UUID id;
+    private Long id;
     private String username;
     private String firstName;
     private String lastName;

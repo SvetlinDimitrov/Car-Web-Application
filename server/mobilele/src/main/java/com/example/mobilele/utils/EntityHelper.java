@@ -57,9 +57,9 @@ public class EntityHelper {
                 .orElseThrow(() -> new NotFoundException("Brand "+ name + " does not exists"));
     }
 
-    private UUID convertToUUID(String id) throws WrongCredentialsException {
+    private Long convertToUUID(String id) throws WrongCredentialsException {
         try{
-            return UUID.fromString(id);
+            return Long.parseLong(id);
         }catch (IllegalArgumentException e){
             throw new WrongCredentialsException("Wrong format of the id");
         }

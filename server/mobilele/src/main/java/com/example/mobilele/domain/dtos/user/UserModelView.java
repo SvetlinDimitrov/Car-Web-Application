@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserModelView {
 
-    private UUID id;
+    private Long id;
     private String name;
     private ModelCategory category;
     private String imageUrl;
