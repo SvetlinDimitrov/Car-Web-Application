@@ -149,8 +149,6 @@ const OfferUpdate = () => {
               <input
                 id="price"
                 type="number"
-                min="0"
-                step="100"
                 className="form-control"
                 placeholder="Suggested price"
                 name={keys.price}
@@ -236,9 +234,6 @@ const OfferUpdate = () => {
               <input
                 id="year"
                 type="number"
-                min="1900"
-                max="2099"
-                step="1"
                 className="form-control"
                 placeholder="Manufacturing year"
                 name={keys.year}
@@ -260,9 +255,6 @@ const OfferUpdate = () => {
               <input
                 id="mileage"
                 type="number"
-                min="0"
-                max="900000"
-                step="1000"
                 className="form-control"
                 placeholder="Mileage in kilometers"
                 name={keys.mileage}

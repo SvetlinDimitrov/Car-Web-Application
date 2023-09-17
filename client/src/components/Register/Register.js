@@ -20,19 +20,31 @@ const initValues = {
 };
 const Register = () => {
   const [error, setError] = useState("");
+  const { errors, onChangeError, onBlurError } = useErrorRegisterForm(initValues);
   const navigate = useNavigate();
 
   const submitHandler = async (values) => {
-    try {
-      await register(values);
-      navigate('/login')
-    } catch (e) {
-      setError(e.message);
+    
+    const response = await register(values);
+    
+    if(!response.ok){
+      const responseData = await response.json();
+      Object.keys(keys).forEach((key) => {
+        const object = {
+          name: key,
+          value: values[key],
+        };
+        onBlurError({ target: object });
+      });
+      const message = responseData.messages.join('\n');
+      setError(message);
+    }else{
+      navigate("/login");
     }
   };
 
   const { values, onChange, onSubmit } = useForm(initValues, submitHandler);
-  const { errors, onChangeError ,onBlurError } =useErrorRegisterForm(initValues);
+  
 
   return (
     <div className="container">
@@ -50,8 +62,7 @@ const Register = () => {
             <input
               id="firstName"
               type="text"
-              min="2"
-              max="20"
+              min="3"
               className="form-control"
               placeholder="First name"
               name={keys.firstName}
@@ -78,8 +89,7 @@ const Register = () => {
             <input
               id="lastName"
               type="text"
-              min="2"
-              max="20"
+              min="3"
               className="form-control"
               placeholder="Last name"
               name={keys.lastName}
@@ -109,8 +119,7 @@ const Register = () => {
               autoComplete="username"
               id="username2"
               type="text"
-              min="2"
-              max="20"
+              min="4"
               className="form-control"
               placeholder="username"
               name={keys.username}
@@ -138,8 +147,7 @@ const Register = () => {
               autoComplete="current-password"
               id="password2"
               type="password"
-              min="2"
-              max="20"
+              min="5"
               className="form-control"
               placeholder="Password"
               name={keys.password}
@@ -161,7 +169,8 @@ const Register = () => {
           </div>
         </div>
 
-        {error.length !== 0 && (
+        {Object.values(errors).every((error) => error === "") &&
+          error !== "" &&(
           <p className="errors alert alert-danger">{error}</p>
         )}
         <div className="row">

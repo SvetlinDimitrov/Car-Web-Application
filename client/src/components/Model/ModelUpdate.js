@@ -147,8 +147,6 @@ const ModelUpdate = () => {
                 <input
                   id="created"
                   type="number"
-                  min="0"
-                  step="1"
                   className="form-control"
                   placeholder="Suggested year"
                   name={keys.created}
@@ -237,8 +235,6 @@ const ModelUpdate = () => {
                 <input
                   id="generation"
                   type="number"
-                  min="0"
-                  step="1"
                   className="form-control"
                   placeholder="Manufacturing year"
                   name={keys.generation}

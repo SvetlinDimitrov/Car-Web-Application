@@ -22,13 +22,24 @@ const Login = () => {
   const navigate = useNavigate();
 
   const submitHandler = async (values) => {
-    try{
-      const userToLogin = await login(values);
-      loginUser(userToLogin);
-      navigate('/');
-    }catch(e){
-      setError(e.message);
-    }
+  
+      const response = await login(values);
+      const responseData = await response.json();
+
+      if(!response.ok){
+        Object.keys(keys).forEach((key) => {
+          const object = {
+            name: key,
+            value: values[key],
+          };
+          onBluerError({ target: object });
+        });
+        setError(responseData.messages.join('\n'));
+      }else{
+        loginUser(responseData);
+        navigate('/');
+      }   
+
   }
 
   const {values , onChange , onSubmit , } = useForm(initValues,submitHandler);
@@ -51,8 +62,6 @@ const Login = () => {
             id="username"
             name={keys.username}
             type="text"
-            min="2"
-            max="50"
             className="form-control"
             placeholder={keys.username}
             value={values[keys.username]}
@@ -90,7 +99,8 @@ const Login = () => {
           {errors[keys.password].length !== 0 &&
           (<p className="errors alert alert-danger">{errors[keys.password]}</p>)}
         </div>
-        {error.length !== 0 && 
+        {Object.values(errors).every((error) => error === "") &&
+          error !== "" && 
         (<p className="errors alert alert-danger">{error}</p>)}
       
         <div className="row">

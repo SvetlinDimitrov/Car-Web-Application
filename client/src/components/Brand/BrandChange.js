@@ -101,8 +101,6 @@ const BrandChange = () => {
               id="username"
               name={keys.name}
               type="text"
-              min="2"
-              max="50"
               className="form-control"
               placeholder={keys.name}
               value={brand[keys.name]}
