@@ -63,7 +63,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PATCH, "/car/api/model").hasRole(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.DELETE, "/car/api/model").hasRole(Role.ADMIN.name())
                                 .requestMatchers(HttpMethod.POST, "/car/api/model").hasRole(Role.ADMIN.name())
-                                .requestMatchers(HttpMethod.GET, "/car/api/offer").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .build();

@@ -56,6 +56,9 @@ public class ModelServiceImp {
         Model model = entityHelper.findModelById(id);
 
         if (modelEditDto.getName() != null && !modelEditDto.getName().equals(model.getName())) {
+            if(modelEditDto.getName().isBlank()){
+                throw new WrongCredentialsException("Name cannot be blank");
+            }
             model.setName(modelEditDto.getName());
         }
         if (modelEditDto.getCategory() != null) {
@@ -65,9 +68,15 @@ public class ModelServiceImp {
             model.setImageUrl(modelEditDto.getImageUrl());
         }
         if (modelEditDto.getCreated() != null) {
+            if(modelEditDto.getCreated() < 1){
+               throw new WrongCredentialsException("Year of creation must be at least 1");
+            }
             model.setCreated(modelEditDto.getCreated());
         }
         if (modelEditDto.getGeneration() != null) {
+            if(modelEditDto.getGeneration() < 0){
+                throw new WrongCredentialsException("Generation must be at least 0");
+            }
             model.setGeneration(modelEditDto.getGeneration());
         }
         if (modelEditDto.getBrandName() != null) {

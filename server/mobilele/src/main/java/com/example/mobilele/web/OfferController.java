@@ -37,6 +37,7 @@ public class OfferController {
 
     @Operation(
             summary = "Get offer/offers",
+            security = {@SecurityRequirement(name = "bearerAuth")},
             description = "Retrieve an OfferView object using 'id' or 'name' parameters, or retrieve all existing offers by using the 'all' parameter." +
                     "If you don't pass any parameters, you will retrieve all offers that the current user has.",
             responses = {

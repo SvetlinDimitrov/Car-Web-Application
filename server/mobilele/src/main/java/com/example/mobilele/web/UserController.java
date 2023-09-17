@@ -74,9 +74,8 @@ public class UserController {
         return new ResponseEntity<>(List.of(new UserView(userServiceImp.getById(principal.getId()))), HttpStatus.OK);
     }
 
-    @SecurityRequirement(name = "bearerAuth")
     @Operation(
-            summary = "Edit offer",
+            summary = "Edit user",
             description = "If you don't send an ID, the changes will be applied to the currently authenticated user.",
             security = {@SecurityRequirement(name = "bearerAuth")},
             responses = {
@@ -165,7 +164,7 @@ public class UserController {
 
 
     @Operation(
-            summary = "Delete offer",
+            summary = "Delete user",
             description = "You can pass an ID as a parameter to delete a user, but only if you have the admin role.",
             security = {@SecurityRequirement(name = "bearerAuth")},
             responses = {

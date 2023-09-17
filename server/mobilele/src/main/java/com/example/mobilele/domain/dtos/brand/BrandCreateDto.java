@@ -15,14 +15,16 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class BrandCreateDto {
 
-    @Schema(description = "The names are unique in the data")
+    @Schema(description = "The names are unique in the data",
+            example = "Golf")
     @NotBlank(message = "name can`t be blank")
     @Size(min = 4, message = "name size should be at least 4")
     private String name;
 
     @Schema(description = "DateTime cannot be in the future",
             type = "string",
-            format = "yyyy-MM-dd")
+            format = "yyyy-MM-dd",
+            example = "1999-08-12")
     @NotBlank(message = "created must not be empty")
     @ValidDateString
     private String created;

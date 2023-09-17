@@ -47,7 +47,7 @@ public class BrandController {
             },
             parameters = {
                     @Parameter(
-                            name = "brandId",
+                            name = "id",
                             description = "The ID of the brand to retrieve.",
                             example = "1"
                     ),
@@ -59,7 +59,7 @@ public class BrandController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<BrandView>> getAllBrands(@RequestParam(value = "brandId", required = false) String brandId,
+    public ResponseEntity<List<BrandView>> getAllBrands(@RequestParam(value = "id", required = false) String brandId,
                                                         @RequestParam(value = "name", required = false) String name) throws NotFoundException, WrongCredentialsException {
 
         if (brandId != null) {
