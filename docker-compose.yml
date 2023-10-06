@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  my-spring-app:
+    restart: always
+    build:
+      dockerfile: DockerfileSERVER
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+    environment:
+      DB_HOST: mysql-db
+      DB_USERNAME: root
+      DB_PASSWORD: 12345
+    networks:
+      - spring-app-mobilele
+    
+
+  mysql-db:
+    restart: always
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: mobilele
+    volumes:
+      - mysql-data-mobilele-completed:/var/lib/mysql
+    networks:
+      - spring-app-mobilele
+
+volumes:
+  mysql-data-mobilele-completed:
+networks:
+  spring-app-mobilele:

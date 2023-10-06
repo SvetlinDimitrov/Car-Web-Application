@@ -10,6 +10,7 @@ import com.example.mobilele.repos.BrandRepository;
 import com.example.mobilele.repos.ModelRepository;
 import com.example.mobilele.repos.OfferRepository;
 import com.example.mobilele.repos.UserRepository;
+import com.example.mobilele.services.EntityHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,25 +42,26 @@ class EntityHelperTest {
     private final Brand brand = new Brand();
     private final Offer offer = new Offer();
     private final Model model = new Model();
+    private final Long correctId = 1L;
+    private final Long wrongId = 222L;
 
 
     @BeforeEach
     void setUp() {
-        user.setId(UUID.randomUUID());
+        user.setId(1L);
         user.setUsername("Test");
 
-        brand.setId(UUID.randomUUID());
+        brand.setId(1L);
         brand.setName("Mercedes");
 
-        offer.setId(UUID.randomUUID());
+        offer.setId(1L);
 
-        model.setId(UUID.randomUUID());
+        model.setId(1L);
         model.setName("s 25 test");
     }
 
     @Test
     void findUserById_WithTheCorrectId_Successful() throws NotFoundException, WrongCredentialsException {
-        UUID correctId = user.getId();
 
         when(userRepository.findById(correctId)).thenReturn(Optional.of(user));
 
@@ -69,7 +71,6 @@ class EntityHelperTest {
     }
     @Test
     void findUserById_WithWrongId_ThrowNotFoundExceptionException() {
-        UUID wrongId = UUID.randomUUID();
         String expectedMessage = "User with id :"+ wrongId +" does not exists";
 
         when(userRepository.findById(wrongId)).thenReturn(Optional.empty());
@@ -83,7 +84,6 @@ class EntityHelperTest {
 
     @Test
     void findOfferById_WithTheCorrectId_Successful() throws NotFoundException, WrongCredentialsException {
-        UUID correctId = offer.getId();
 
         when(offerRepository.findById(correctId)).thenReturn(Optional.of(offer));
 
@@ -94,7 +94,7 @@ class EntityHelperTest {
 
     @Test
     void findOfferById_WithWrongId_ThrowNotFoundExceptionException(){
-        UUID wrongId = UUID.randomUUID();
+
         String expectedMessage = "Offer with id :"+ wrongId +" does not exists";
 
         when(offerRepository.findById(wrongId)).thenReturn(Optional.empty());
@@ -106,7 +106,6 @@ class EntityHelperTest {
 
     @Test
     void findBrandById_WithTheCorrectId_Successful() throws NotFoundException, WrongCredentialsException {
-        UUID correctId = brand.getId();
 
         when(brandRepository.findById(correctId)).thenReturn(Optional.of(brand));
 
@@ -116,7 +115,7 @@ class EntityHelperTest {
     }
     @Test
     void findBrandById_WithWrongId_ThrowNotFoundExceptionException(){
-        UUID wrongId = UUID.randomUUID();
+
         String expectedMessage = "Brand with id :"+ wrongId +" does not exists";
 
         when(brandRepository.findById(wrongId)).thenReturn(Optional.empty());
@@ -128,7 +127,6 @@ class EntityHelperTest {
 
     @Test
     void findModelById_WithTheCorrectId_Successful() throws NotFoundException, WrongCredentialsException {
-        UUID correctId = model.getId();
 
         when(modelRepository.findById(correctId)).thenReturn(Optional.of(model));
 
@@ -138,7 +136,6 @@ class EntityHelperTest {
     }
     @Test
     void findModelById_WithWrongId_ThrowNotFoundExceptionException()  {
-        UUID wrongId = UUID.randomUUID();
         String expectedMessage = "Model with id :"+ wrongId +" does not exists";
 
         when(modelRepository.findById(wrongId)).thenReturn(Optional.empty());

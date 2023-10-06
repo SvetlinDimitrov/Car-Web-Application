@@ -2,7 +2,6 @@ package com.example.mobilele.services;
 
 import com.example.mobilele.config.security.UserPrincipal;
 import com.example.mobilele.domain.entity.UserRole;
-import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.Role;
 import com.example.mobilele.domain.dtos.user.UserEditDto;
 import com.example.mobilele.domain.dtos.user.UserLoginDto;

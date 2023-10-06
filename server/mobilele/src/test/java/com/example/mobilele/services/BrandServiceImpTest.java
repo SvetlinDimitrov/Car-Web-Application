@@ -10,7 +10,6 @@ import com.example.mobilele.exceptions.AlreadyExistException;
 import com.example.mobilele.exceptions.NotFoundException;
 import com.example.mobilele.exceptions.WrongCredentialsException;
 import com.example.mobilele.repos.BrandRepository;
-import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.ModelCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,9 +49,9 @@ class BrandServiceImpTest {
     @BeforeEach
     void setUp() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
-        UUID id3 = UUID.randomUUID();
+        Long id1 = 1L;
+        Long id2 = 2L;
+        Long id3 = 3L;
         brands.addAll(List.of(
                 Brand.builder()
                         .id(id1)

@@ -7,7 +7,6 @@ import com.example.mobilele.exceptions.NotFoundException;
 import com.example.mobilele.exceptions.WrongCredentialsException;
 import com.example.mobilele.repos.UserRepository;
 import com.example.mobilele.repos.UserRoleRepository;
-import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,16 +54,16 @@ class UserServiceImpTest {
 
     @BeforeEach
     void setUp() {
-        UUID user1 = UUID.randomUUID();
-        UUID user2 = UUID.randomUUID();
-        UUID userRole = UUID.randomUUID();
-        UUID adminRole = UUID.randomUUID();
-        UUID offerId1 = UUID.randomUUID();
-        UUID offerId2 = UUID.randomUUID();
-        UUID modelId1 = UUID.randomUUID();
-        UUID modelId2 = UUID.randomUUID();
-        UUID brandId1 = UUID.randomUUID();
-        UUID brandId2 = UUID.randomUUID();
+        Long user1 = 1L;
+        Long user2 = 2L;
+        Long userRole = 1L;
+        Long adminRole = 2L;
+        Long offerId1 = 1L;
+        Long offerId2 = 2L;
+        Long modelId1 = 1L;
+        Long modelId2 = 2L;
+        Long brandId1 = 1L;
+        Long brandId2 = 2L;
 
 
         user.setId(userRole);

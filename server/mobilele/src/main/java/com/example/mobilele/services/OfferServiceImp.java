@@ -11,7 +11,6 @@ import com.example.mobilele.exceptions.WrongCredentialsException;
 import com.example.mobilele.repos.ModelRepository;
 import com.example.mobilele.repos.OfferRepository;
 import com.example.mobilele.repos.UserRepository;
-import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.EngineType;
 import com.example.mobilele.utils.constants.TransmissionType;
 import lombok.AllArgsConstructor;

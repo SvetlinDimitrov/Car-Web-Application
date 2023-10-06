@@ -8,7 +8,6 @@ import com.example.mobilele.domain.entity.User;
 import com.example.mobilele.exceptions.NotFoundException;
 import com.example.mobilele.exceptions.WrongCredentialsException;
 import com.example.mobilele.repos.ModelRepository;
-import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.ModelCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,14 +52,14 @@ class ModelServiceImpTest {
 
     @BeforeEach
     void setUp() {
-        UUID model1 = UUID.randomUUID();
-        UUID model2 = UUID.randomUUID();
-        UUID userId1 = UUID.randomUUID();
-        UUID userId2 = UUID.randomUUID();
-        UUID offerId1 = UUID.randomUUID();
-        UUID offerId2 = UUID.randomUUID();
-        UUID brandId1 = UUID.randomUUID();
-        UUID brandId2 = UUID.randomUUID();
+        Long model1 = 1L;
+        Long model2 = 2L;
+        Long userId1 = 1L;
+        Long userId2 = 2L;
+        Long offerId1 = 1L;
+        Long offerId2 = 2L;
+        Long brandId1 = 1L;
+        Long brandId2 = 2L;
 
         User user1 = User.builder()
                 .id(userId1)

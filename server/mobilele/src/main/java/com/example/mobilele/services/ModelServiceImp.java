@@ -7,7 +7,6 @@ import com.example.mobilele.domain.entity.Model;
 import com.example.mobilele.exceptions.NotFoundException;
 import com.example.mobilele.exceptions.WrongCredentialsException;
 import com.example.mobilele.repos.ModelRepository;
-import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.ModelCategory;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;

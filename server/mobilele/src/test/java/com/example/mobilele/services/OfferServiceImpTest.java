@@ -8,7 +8,6 @@ import com.example.mobilele.domain.entity.User;
 import com.example.mobilele.exceptions.NotFoundException;
 import com.example.mobilele.exceptions.WrongCredentialsException;
 import com.example.mobilele.repos.OfferRepository;
-import com.example.mobilele.utils.EntityHelper;
 import com.example.mobilele.utils.constants.EngineType;
 import com.example.mobilele.utils.constants.TransmissionType;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,17 +52,17 @@ class OfferServiceImpTest {
 
     @BeforeEach
     void setUp() {
-        UUID sellerId1 = UUID.randomUUID();
-        UUID sellerId2 = UUID.randomUUID();
+        Long sellerId1 = 1L;
+        Long sellerId2 = 2L;
 
-        UUID modelId1 = UUID.randomUUID();
-        UUID modelId2 = UUID.randomUUID();
+        Long modelId1 = 1L;
+        Long modelId2 = 2L;
 
-        UUID offerId1 = UUID.randomUUID();
-        UUID offerId2 = UUID.randomUUID();
+        Long offerId1 = 1L;
+        Long offerId2 = 2L;
 
-        UUID brandId1 = UUID.randomUUID();
-        UUID brandId2 = UUID.randomUUID();
+        Long brandId1 = 1L;
+        Long brandId2 = 2L;
 
         Brand brand1 = Brand.builder()
                 .id(brandId1)

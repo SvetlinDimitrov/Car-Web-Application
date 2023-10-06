@@ -1,4 +1,4 @@
-package com.example.mobilele.utils;
+package com.example.mobilele.services;
 
 import com.example.mobilele.domain.entity.Brand;
 import com.example.mobilele.domain.entity.Model;
