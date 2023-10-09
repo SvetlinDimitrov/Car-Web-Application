@@ -23,4 +23,7 @@ jobs:
         java-version: '17.0.7'
         distribution: 'temurin'
     - name: Run the Gradle package task
-      run: ./gradlew build
+      run: |
+        cd server
+        cd mobilele
+        ./gradlew build
