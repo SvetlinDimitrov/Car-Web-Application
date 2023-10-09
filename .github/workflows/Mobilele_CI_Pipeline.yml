@@ -25,8 +25,5 @@ jobs:
       with:
         java-version: '17.0.7'
         distribution: 'temurin'
-    - name: Build and Test with Gradle
-      run: |
-        cd /server/mobilele
-        ./gradlew build 
-        ./gradlew test  
+    - name: Run the Gradle package task
+      uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629 
