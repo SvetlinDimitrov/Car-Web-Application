@@ -22,8 +22,6 @@ jobs:
         cache: 'gradle'
         distribution: corretto
 
-    - name : test
-      run: ./gradlew test --no-daemon
     - name : build
       run: ./gradlew build --no-daemon
 
