@@ -21,6 +21,10 @@ jobs:
         cache: 'gradle'
         distribution: corretto
 
+    - name : test
+      working-directory: ./server/mobilele
+      run: ./gradlew test --no-daemon
+      
     - name : build
       working-directory: ./server/mobilele
       run: ./gradlew build --no-daemon
