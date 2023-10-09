@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,30 +75,6 @@ public class BrandServiceImp{
         Brand brand = entityHelper.findBrandById(brandId);
 
         brandRepository.delete(brand);
-    }
-
-    public void seed() {
-        if(brandRepository.count() == 0){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            brandRepository.saveAll(List.of(
-                    Brand.builder()
-                            .name("BMWW")
-                            .created(LocalDate.parse("1916-03-07", formatter))
-                            .modified(LocalDate.parse("1924-07-11", formatter))
-                            .build(),
-                    Brand.builder()
-                            .name("Mercedes-Benz")
-                            .created(LocalDate.parse("1926-02-18", formatter))
-                            .modified(LocalDate.parse("1956-02-13", formatter))
-                            .build(),
-                    Brand.builder()
-                            .name("Audi")
-                            .created(LocalDate.parse("1909-06-16", formatter))
-                            .modified(null)
-                            .build()
-            ));
-        }
     }
 
     private void validBrandUsername(String name) throws AlreadyExistException {

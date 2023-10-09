@@ -106,32 +106,4 @@ public class UserServiceImp{
     public boolean isAdmin(User user){
         return user.getUserRoles().stream().map(UserRole::getRole).anyMatch(r-> r.equals(Role.ADMIN));
     }
-    public void seed() {
-        if(userRepository.count() == 0){
-            userRepository.saveAll(List.of(
-                    User.builder()
-                            .isActive(Boolean.TRUE)
-                            .created(LocalDate.now())
-                            .firstName("Zaharia")
-                            .lastName("Stepanov")
-                            .imageUrl("https://yt3.googleusercontent.com/ytc/AOPolaROJsray4rabTdqph4zpBJAt_01EwS5FbVlNfus=s900-c-k-c0x00ffffff-no-rj")
-                            .modified(null)
-                            .password(passwordEncoder.encode("12345"))
-                            .username("Zaharia")
-                            .userRoles(userRoleRepository.findAll())
-                            .build(),
-                    User.builder()
-                            .isActive(Boolean.TRUE)
-                            .created(LocalDate.now())
-                            .firstName("Ivan")
-                            .lastName("Ivanov")
-                            .imageUrl("https://upload.wikimedia.org/wikipedia/commons/2/27/Ivan_Abadjiev.jpg")
-                            .modified(null)
-                            .password(passwordEncoder.encode("12345"))
-                            .username("Ivan")
-                            .userRoles(userRoleRepository.findAll())
-                            .build()
-            ));
-        }
-    }
 }
