@@ -27,5 +27,6 @@ jobs:
         distribution: 'temurin'
     - name: Build and Test with Gradle
       run: |
+        cd /server/mobilele
         ./gradlew build 
         ./gradlew test  
