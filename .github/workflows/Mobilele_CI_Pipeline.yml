@@ -12,8 +12,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with: 
-        path: server/mobilele
+    
       
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -23,5 +22,6 @@ jobs:
         distribution: corretto
 
     - name : build
+      working-directory: ./server/mobilele
       run: ./gradlew build --no-daemon
 
