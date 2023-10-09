@@ -12,6 +12,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+      with: 
+        path: server/mobilele
       
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -19,9 +21,9 @@ jobs:
         java-version: 17
         cache: 'gradle'
         distribution: corretto
-    - name : buld
-      run: |
-        cd server
-        cd mobilele
-        ./gradlew build --no-daemon
+
+    - name : test
+      run: ./gradlew test --no-daemon
+    - name : build
+      run: ./gradlew build --no-daemon
 
