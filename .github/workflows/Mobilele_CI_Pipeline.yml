@@ -31,7 +31,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: mobileleBuildProject
-        path: mobilele/build/libs
+        path: server/mobilele/build/libs
         if-no-files-found: error
       
   mobilele_CD:
