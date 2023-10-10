@@ -26,12 +26,25 @@ jobs:
     - name : build
       working-directory: ./server/mobilele
       run: ./gradlew build --no-daemon
+
+    - name: set the build project in artefact
+    - uses: actions/upload-artifact@v3
+      with:
+        name: mobileleBuildProject
+        path: mobilele/build/libs
+        if-no-files-found: error
       
   mobilele_CD:
     needs: mobilele_CI
     runs-on: windows-latest  
     steps:
-    - uses: actions/checkout@v4
+    - name: checkout the repo
+      uses: actions/checkout@v4
+
+    - name: Download the build project for mobilele_CI job
+      uses: actions/download-artifact@v3
+      with:
+        name: mobileleBuildProject
     
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
