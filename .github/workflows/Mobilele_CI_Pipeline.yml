@@ -57,6 +57,6 @@ jobs:
         
     - name: Build and Push Docker Image
       run: |
-        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mobilele:latest -f DockerfileServer .
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mobilele:latest -f DockerFile.server .
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/mobilele:latest
         
