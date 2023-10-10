@@ -45,6 +45,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: mobileleBuildProject
+        path: server/mobilele/build/libs
         
     - run: ls -R
     
