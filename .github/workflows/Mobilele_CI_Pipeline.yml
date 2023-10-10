@@ -1,0 +1,62 @@
+name: Gradle Build and Test
+
+on:
+  push:
+    branches:
+      - main 
+  workflow_dispatch: 
+
+jobs:
+  mobilele_CI:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v4
+    
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: 17
+        cache: 'gradle'
+        distribution: corretto
+
+    - name : Test && Build
+      working-directory: ./server/mobilele
+      run: |
+        ./gradlew test --no-daemon
+        ./gradlew build --no-daemon
+      
+    - name: Set the build project in artefact
+      uses: actions/upload-artifact@v3
+      with:
+        name: mobileleBuildProject
+        path: server/mobilele/build/libs/mobilele-0.0.1-SNAPSHOT.jar
+        if-no-files-found: error
+      
+  mobilele_CD_Docker:
+    needs: mobilele_CI
+    runs-on: windows-latest  
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v4
+
+    - name: Download the build project for mobilele_CI job
+      uses: actions/download-artifact@v3
+      with:
+        name: mobileleBuildProject
+        path: server/mobilele/build/libs
+        
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mobilele:latest -f DockerfileServer .
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/mobilele:latest
+        
