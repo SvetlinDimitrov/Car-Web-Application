@@ -28,7 +28,7 @@ jobs:
       run: ./gradlew build --no-daemon
 
     - name: set the build project in artefact
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: mobileleBuildProject
         path: mobilele/build/libs
