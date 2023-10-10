@@ -1,5 +1,7 @@
+import host from "../config";
+
 export const getAllModel = async () => {
-  const response = await fetch("http://127.0.0.1:8080/car/api/model");
+  const response = await fetch(`http://${host}:8080/car/api/model`);
   
   const result = await response.json();
   
@@ -9,7 +11,7 @@ export const getModelById = async (user, id) => {
   const queryParams = new URLSearchParams({
     id: id,
   });
-  return await fetch(`http://127.0.0.1:8080/car/api/model?${queryParams}`, {
+  return await fetch(`http://${host}:8080/car/api/model?${queryParams}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -19,7 +21,7 @@ export const getModelById = async (user, id) => {
 };
 
 export const createModel = async (user, model) => {
-  return await fetch("http://127.0.0.1:8080/car/api/model", {
+  return await fetch(`http://${host}:8080/car/api/model`, {
      method: "POST",
      headers: {
        Authorization: `Bearer ${user.token}`,
@@ -33,7 +35,7 @@ export const deleteModel = async (id , user) =>{
   const queryParams = new URLSearchParams({
     'id': id,
   });
-  return await fetch(`http://127.0.0.1:8080/car/api/model?${queryParams}`, {
+  return await fetch(`http://${host}:8080/car/api/model?${queryParams}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -47,7 +49,7 @@ export const updateModel = async (user, model) => {
     'id': model.id,
   });
 
-  return await fetch(`http://127.0.0.1:8080/car/api/model?${queryParams}`, {
+  return await fetch(`http://${host}:8080/car/api/model?${queryParams}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${user.token}`,

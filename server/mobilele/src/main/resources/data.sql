@@ -7,13 +7,6 @@ CREATE TABLE IF NOT EXISTS `brandInit` (
     `name` varchar(255) DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `brand` (
-    `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `created` date DEFAULT NULL,
-    `modified` date DEFAULT NULL,
-    `name` varchar(255) DEFAULT NULL
-);
-
 insert into brandInit (created, modified, name)
 VALUES ('1916-03-07' , '1924-07-11' , 'BMWW' ) ,
        ('1926-02-18', '1956-02-13' , 'Mercedes-Benz') ,
@@ -26,17 +19,6 @@ WHERE (SELECT count(*) from brand) = 0;
 
 DROP table brandInit ;
 
-CREATE TABLE IF NOT EXISTS `model` (
-    `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `category` ENUM ('Car', 'Buss', 'Truck', 'Motorcycle') DEFAULT NULL,
-    `created` int DEFAULT NULL,
-    `generation` int DEFAULT NULL,
-    `image_url` varchar(512) DEFAULT NULL,
-    `name` varchar(255) DEFAULT NULL UNIQUE ,
-    `brand_id` bigint DEFAULT NULL,
-CONSTRAINT FOREIGN KEY (`brand_id`) REFERENCES `brand` (`id`)
-);
-
 CREATE TABLE IF NOT EXISTS `modelInit` (
     `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY ,
     `category` ENUM ('Car', 'Buss', 'Truck', 'Motorcycle') DEFAULT NULL,
@@ -44,8 +26,7 @@ CREATE TABLE IF NOT EXISTS `modelInit` (
     `generation` int DEFAULT NULL,
     `image_url` varchar(512) DEFAULT NULL,
     `name` varchar(255) DEFAULT NULL UNIQUE ,
-    `brand_id` bigint DEFAULT NULL,
-    CONSTRAINT FOREIGN KEY (`brand_id`) REFERENCES `brand` (`id`)
+    `brand_id` bigint DEFAULT NULL
 );
 
 insert into modelInit (CATEGORY, CREATED, GENERATION, IMAGE_URL, NAME, BRAND_ID)
@@ -80,22 +61,10 @@ CREATE TABLE IF NOT EXISTS `userInit` (
     `username` varchar(255) DEFAULT NULL UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS `user` (
-    `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-    `created` date DEFAULT NULL,
-    `first_name` varchar(255) DEFAULT NULL,
-    `image_url` varchar(255) DEFAULT NULL,
-    `is_active` BOOLEAN DEFAULT NULL,
-    `last_name` varchar(255) DEFAULT NULL,
-    `modified` date DEFAULT NULL,
-    `password` varchar(255) DEFAULT NULL,
-    `username` varchar(255) DEFAULT NULL UNIQUE
-);
-
 INSERT INTO userInit (created, first_name, image_url, is_active, last_name, modified, password, username)
 VALUES
-    ('2005-05-05' , 'Zaharia' , 'https://yt3.googleusercontent.com/ytc/AOPolaROJsray4rabTdqph4zpBJAt_01EwS5FbVlNfus=s900-c-k-c0x00ffffff-no-rj' , TRUE , 'Stepanov' , null , '12345' ,'Zaharia'),
-    ('2015-05-05' , 'Ivan' , 'https://upload.wikimedia.org/wikipedia/commons/2/27/Ivan_Abadjiev.jpg' , TRUE , 'Ivanov' , null , '12345' ,'Ivan')
+    ('2005-05-05' , 'Zaharia' , 'https://yt3.googleusercontent.com/ytc/AOPolaROJsray4rabTdqph4zpBJAt_01EwS5FbVlNfus=s900-c-k-c0x00ffffff-no-rj' , TRUE , 'Stepanov' , null , '$2a$10$zhmZYN5KMTGbPw9WU/BHkO2C5h6RuuKwC0oNvfl5chkX4wE8D30VC' ,'Zaharia'),
+    ('2015-05-05' , 'Ivan' , 'https://upload.wikimedia.org/wikipedia/commons/2/27/Ivan_Abadjiev.jpg' , TRUE , 'Ivanov' , null , '$2a$10$zhmZYN5KMTGbPw9WU/BHkO2C5h6RuuKwC0oNvfl5chkX4wE8D30VC' ,'Ivan')
 ;
 
 INSERT INTO user (id, created, first_name, image_url, is_active, last_name, modified, password, username)
@@ -117,27 +86,9 @@ CREATE TABLE IF NOT EXISTS `offerInit` (
     `transmission` ENUM ('MANUAL', 'AUTOMATIC') DEFAULT NULL,
     `year` int DEFAULT NULL,
     `model_id` bigint DEFAULT NULL,
-    `seller_id` bigint DEFAULT NULL,
-    CONSTRAINT FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
-    CONSTRAINT FOREIGN KEY (`model_id`) REFERENCES `model` (`id`)
+    `seller_id` bigint DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS `offer` (
-    `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `created` date DEFAULT NULL,
-    `description` varchar(255) DEFAULT NULL,
-    `engine` ENUM ('GASOLINE', 'DIESEL', 'ELECTRIC', 'HYBRID') DEFAULT NULL,
-    `image_url` varchar(255) DEFAULT NULL,
-    `mileage` int DEFAULT NULL,
-    `modified` date DEFAULT NULL,
-    `price` decimal(38,2) DEFAULT NULL,
-    `transmission` ENUM ('MANUAL', 'AUTOMATIC') DEFAULT NULL,
-    `year` int DEFAULT NULL,
-    `model_id` bigint DEFAULT NULL,
-    `seller_id` bigint DEFAULT NULL,
-    CONSTRAINT FOREIGN KEY (`seller_id`) REFERENCES `user` (`id`),
-    CONSTRAINT FOREIGN KEY (`model_id`) REFERENCES `model` (`id`)
-);
 
 INSERT INTO offerInit (created, description, engine, image_url, mileage, modified, price, transmission, year, model_id, seller_id)
 VALUES
@@ -156,11 +107,6 @@ WHERE (SELECT COUNT(*) FROM offer) = 0;
 
 DROP TABLE offerInit;
 
-CREATE TABLE IF NOT EXISTS `user_role` (
-    `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `role` ENUM ('USER' , 'ADMIN') DEFAULT NULL
-);
-
 CREATE TABLE IF NOT EXISTS `user_role_init` (
     `id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `role` ENUM ('USER' , 'ADMIN') DEFAULT NULL
@@ -176,25 +122,9 @@ WHERE (SELECT COUNT(*) FROM user_role) = 0;
 
 DROP TABLE user_role_init;
 
-CREATE TABLE IF NOT EXISTS `user_models` (
-    `user_id` bigint NOT NULL,
-    `model_id` bigint NOT NULL,
-    CONSTRAINT FOREIGN KEY (`model_id`) REFERENCES `model` (`id`),
-    CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-);
-
-CREATE TABLE IF NOT EXISTS `user_roles_users` (
-    `user_id` bigint NOT NULL,
-    `user_role_id` bigint NOT NULL,
-    CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-    CONSTRAINT FOREIGN KEY (`user_role_id`) REFERENCES `user_role` (`id`)
-);
-
 CREATE TABLE IF NOT EXISTS `user_roles_users_init` (
     `user_id` bigint NOT NULL,
-    `user_role_id` bigint NOT NULL,
-    CONSTRAINT FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-    CONSTRAINT FOREIGN KEY (`user_role_id`) REFERENCES `user_role` (`id`)
+    `user_role_id` bigint NOT NULL
 );
 
 INSERT INTO user_roles_users_init (user_id, user_role_id)

@@ -1,5 +1,8 @@
+import host from "../config";
+
 export const getAllBrands = async () => {
-  const response = await fetch("http://127.0.0.1:8080/car/api/brand");
+  
+  const response = await fetch(`http://${host}:8080/car/api/brand`);
 
   const result = await response.json();
 
@@ -7,7 +10,7 @@ export const getAllBrands = async () => {
 };
 
 export const createBrand = async (user, data) => {
-  return await fetch("http://127.0.0.1:8080/car/api/brand", {
+  return await fetch(`http://${host}:8080/car/api/brand`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -21,7 +24,7 @@ export const getBrandById = async (user, id) => {
   const queryParams = new URLSearchParams({
     brandId: id,
   });
-  return await fetch(`http://127.0.0.1:8080/car/api/brand?${queryParams}`, {
+  return await fetch(`http://${host}:8080/car/api/brand?${queryParams}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -35,7 +38,7 @@ export const updateBrand = async (user, brand) => {
     id: brand.id,
   });
 
-  return await fetch(`http://127.0.0.1:8080/car/api/brand?${queryParams}`, {
+  return await fetch(`http://${host}:8080/car/api/brand?${queryParams}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -49,7 +52,7 @@ export const deleteBrand = async (user, brandId) => {
   const queryParams = new URLSearchParams({
     id: brandId,
   });
-  return await fetch(`http://127.0.0.1:8080/car/api/brand?${queryParams}`, {
+  return await fetch(`http://${host}:8080/car/api/brand?${queryParams}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${user.token}`,

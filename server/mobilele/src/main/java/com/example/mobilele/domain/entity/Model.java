@@ -21,7 +21,7 @@ public class Model {
     @Column(unique = true)
     private String name;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column
     private ModelCategory category;
 

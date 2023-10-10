@@ -1,10 +1,12 @@
+import host from "../config";
+
 export const getAllOffers = async (user) => {
   const queryParams = new URLSearchParams({
     all: true,
   });
 
   return await fetch(
-    `http://127.0.0.1:8080/car/api/offer?${queryParams}`,
+    `http://${host}:8080/car/api/offer?${queryParams}`,
     {
       method: "GET",
       headers: {
@@ -20,7 +22,7 @@ export const getOfferById = async (id, user) => {
     offerId: id,
   });
   return await fetch(
-    `http://127.0.0.1:8080/car/api/offer?${queryParams}`,
+    `http://${host}:8080/car/api/offer?${queryParams}`,
     {
       method: "GET",
       headers: {
@@ -32,7 +34,7 @@ export const getOfferById = async (id, user) => {
 };
 
 export const createOffer = async (user, offer) => {
- return  await fetch("http://127.0.0.1:8080/car/api/offer", {
+ return  await fetch(`http://${host}:8080/car/api/offer`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -46,7 +48,7 @@ export const deleteOffer = async (id , user) =>{
   const queryParams = new URLSearchParams({
     'id': id,
   });
-  return await fetch(`http://127.0.0.1:8080/car/api/offer?${queryParams}`, {
+  return await fetch(`http://${host}:8080/car/api/offer?${queryParams}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -62,7 +64,7 @@ export const updateOffer = async (user, offer) => {
 
   const updateOffer = {...offer , modelName : offer.model.name}
 
-  return await fetch(`http://127.0.0.1:8080/car/api/offer?${queryParams}`, {
+  return await fetch(`http://${host}:8080/car/api/offer?${queryParams}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${user.token}`,

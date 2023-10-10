@@ -25,7 +25,7 @@ public class Offer {
     private String description;
 
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private EngineType engine;
 
     @Column
@@ -38,7 +38,7 @@ public class Offer {
     private BigDecimal price;
 
     @Column
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TransmissionType transmission;
 
     @Column

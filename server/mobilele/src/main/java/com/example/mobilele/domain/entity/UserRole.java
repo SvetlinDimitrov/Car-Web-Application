@@ -19,7 +19,7 @@ public class UserRole {
     private Long id;
 
     @Column
-    @Enumerated
+    @Enumerated (EnumType.STRING)
     private Role role;
 
     @ManyToMany(mappedBy = "userRoles")
