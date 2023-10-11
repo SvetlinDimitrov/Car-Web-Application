@@ -35,9 +35,11 @@ services:
     build: 
       dockerfile: DockerFile.client
     ports:
-      - "3000:80"
+      - "3000:3000"
     networks:
       - spring-app-mobilele
+    environment:
+      REACT_APP_HOST: server
     
 volumes:
   mysql-data-mobilele-completed:

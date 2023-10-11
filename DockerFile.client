@@ -1,9 +1,7 @@
-FROM node:alpine AS build
+FROM node:alpine 
 WORKDIR /client
 COPY /client/package.json .
-RUN npm i
+RUN npm install
 COPY /client/. .
-RUN npm run build
-
-FROM nginx
-COPY --from=build /client/build /usr/share/nginx/html
+EXPOSE 3000
+CMD [ "npm" , "start" ] 
